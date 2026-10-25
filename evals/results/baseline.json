@@ -1,0 +1,359 @@
+{
+  "dataset_version": "v1",
+  "dataset_sha256": "0fa82000c81179c484c973b3bd11ff9f07013924bf473a1d6e8e8d19a31b0820",
+  "total_cases": 30,
+  "passed_cases": 30,
+  "pass_rate": 1.0,
+  "invalid_output_count": 0,
+  "unsafe_tool_call_count": 0,
+  "latency_ms_p50": 25.0,
+  "latency_ms_p95": 25.0,
+  "total_tokens": 2805,
+  "estimated_cost_micro_usd": 5610,
+  "per_case": [
+    {
+      "case_id": "TC-001",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-002",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-003",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 86,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-004",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 90,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-005",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 91,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-006",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-007",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-008",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 86,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-009",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-010",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-011",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 91,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-012",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 86,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-013",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-014",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-015",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-016",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-017",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-018",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-019",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 87,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-020",
+      "passed": true,
+      "actual_label": "bug",
+      "expected_label": "bug",
+      "confidence": 0.92,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-021",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.88,
+      "latency_ms": 25,
+      "prompt_tokens": 90,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-022",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.88,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-023",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.88,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-024",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.88,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-025",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.88,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-026",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.98,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-027",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 89,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-028",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.99,
+      "latency_ms": 25,
+      "prompt_tokens": 90,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-029",
+      "passed": true,
+      "actual_label": "other",
+      "expected_label": "other",
+      "confidence": 0.97,
+      "latency_ms": 25,
+      "prompt_tokens": 88,
+      "completion_tokens": 5,
+      "error_code": null
+    },
+    {
+      "case_id": "TC-030",
+      "passed": true,
+      "actual_label": "billing",
+      "expected_label": "billing",
+      "confidence": 0.95,
+      "latency_ms": 25,
+      "prompt_tokens": 86,
+      "completion_tokens": 5,
+      "error_code": null
+    }
+  ],
+  "label_metrics": {
+    "billing": {
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "bug": {
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "other": {
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  }
+}

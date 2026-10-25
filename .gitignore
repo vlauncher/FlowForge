@@ -1,0 +1,25 @@
+# Environments and Python
+.venv/
+.venv-docs/
+.env
+*.egg-info/
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/.wireit/
+frontend/.cache/
+
+# Coverage / Test artifacts
+htmlcov/
+.coverage
+.coverage.*
+
+# OS
+.DS_Store
