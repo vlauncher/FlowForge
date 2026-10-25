@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import { useEffect, useState, useCallback } from "react";
 import { apiFetch } from "../../api/client";
 import { ApiError } from "../../api/errors";
@@ -14,6 +15,7 @@ export function WebhookTriggerCard({
   orgId: string;
   workflowId: string;
 }) {
+  const toast = useToast();
   const [triggers, setTriggers] = useState<Trigger[]>([]);
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [selectedCredentialId, setSelectedCredentialId] = useState<string>("");
@@ -64,6 +66,7 @@ export function WebhookTriggerCard({
         body: JSON.stringify({ credential_id: selectedCredentialId }),
       });
       setTriggers((prev) => [newTrigger, ...prev]);
+      toast.success("Webhook trigger created", "Sign requests with HMAC-SHA256 to invoke it.");
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setError(err.detail || err.message);
@@ -76,7 +79,7 @@ export function WebhookTriggerCard({
   };
 
   if (isLoading) {
-    return <div style={{ fontSize: "13px", color: "#64748b" }}>Loading webhook triggers...</div>;
+    return <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>Loading webhook triggers...</div>;
   }
 
   const activeTrigger = triggers[0];
@@ -85,14 +88,14 @@ export function WebhookTriggerCard({
     <div
       data-testid="webhook-trigger-card"
       style={{
-        background: "#fff",
+        background: "var(--surface)",
         borderRadius: "8px",
-        border: "1px solid #e2e8f0",
+        border: "1px solid var(--border)",
         padding: "16px",
         marginTop: "20px",
       }}
     >
-      <h3 style={{ margin: "0 0 12px 0", fontSize: "15px", fontWeight: "600", color: "#1e293b" }}>
+      <h3 style={{ margin: "0 0 12px 0", fontSize: "15px", fontWeight: "600", color: "var(--text)" }}>
         Webhook Trigger
       </h3>
 
@@ -100,8 +103,8 @@ export function WebhookTriggerCard({
         <div
           data-testid="webhook-trigger-error"
           style={{
-            background: "#fee2e2",
-            color: "#991b1b",
+            background: "var(--danger-bg)",
+            color: "var(--danger-fg)",
             padding: "8px 12px",
             borderRadius: "4px",
             fontSize: "12px",
@@ -115,18 +118,18 @@ export function WebhookTriggerCard({
       {activeTrigger ? (
         <div>
           <div style={{ marginBottom: "12px" }}>
-            <span style={{ fontSize: "12px", color: "#64748b", display: "block", marginBottom: "4px" }}>
+            <span style={{ fontSize: "12px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
               Webhook Ingest URL:
             </span>
             <code
               data-testid="webhook-url-display"
               style={{
                 display: "block",
-                background: "#f1f5f9",
+                background: "var(--surface-2)",
                 padding: "8px 12px",
                 borderRadius: "4px",
                 fontSize: "12px",
-                color: "#0f172a",
+                color: "var(--text)",
                 wordBreak: "break-all",
               }}
             >
@@ -135,14 +138,14 @@ export function WebhookTriggerCard({
           </div>
 
           <div style={{ marginTop: "12px" }}>
-            <span style={{ fontSize: "12px", color: "#64748b", display: "block", marginBottom: "4px" }}>
+            <span style={{ fontSize: "12px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
               Example Signed Ingestion (curl):
             </span>
             <pre
               data-testid="webhook-curl-snippet"
               style={{
-                background: "#0f172a",
-                color: "#e2e8f0",
+                background: "var(--code-bg)",
+                color: "var(--text)",
                 padding: "12px",
                 borderRadius: "6px",
                 fontSize: "11px",
@@ -162,7 +165,7 @@ curl -X POST https://flowforge.example.com${activeTrigger.webhook_url} \\
         </div>
       ) : (
         <div>
-          <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 12px 0" }}>
+          <p style={{ fontSize: "13px", color: "var(--text-muted)", margin: "0 0 12px 0" }}>
             No webhook trigger configured for this workflow. Create one to enable HMAC-SHA256 authenticated event triggers.
           </p>
 
@@ -174,7 +177,7 @@ curl -X POST https://flowforge.example.com${activeTrigger.webhook_url} \\
               style={{
                 padding: "6px 10px",
                 borderRadius: "4px",
-                border: "1px solid #cbd5e1",
+                border: "1px solid var(--border)",
                 fontSize: "13px",
               }}
             >
@@ -192,7 +195,7 @@ curl -X POST https://flowforge.example.com${activeTrigger.webhook_url} \\
               style={{
                 padding: "6px 14px",
                 borderRadius: "4px",
-                background: "#2563eb",
+                background: "var(--grad-primary)",
                 color: "#fff",
                 border: "none",
                 fontWeight: "500",

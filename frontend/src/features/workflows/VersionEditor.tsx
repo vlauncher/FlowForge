@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import { useState, useId } from "react";
 import { apiFetch } from "../../api/client";
 import { ApiError } from "../../api/errors";
@@ -23,6 +24,7 @@ export function VersionEditor({
   onVersionUpdated,
   onVersionPublished,
 }: VersionEditorProps) {
+  const toast = useToast();
   const jsonTextareaId = useId();
   const [jsonString, setJsonString] = useState(
     JSON.stringify(version.definition_json, null, 2)
@@ -71,6 +73,9 @@ export function VersionEditor({
       setValidationIssues(res.errors || []);
       if (res.valid) {
         setActionSuccess(`Workflow is valid! Checksum: ${res.checksum?.slice(0, 8)}...`);
+        toast.success("Definition is valid");
+      } else {
+        toast.error("Validation failed", "Fix the highlighted issues before publishing.");
       }
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -103,6 +108,7 @@ export function VersionEditor({
         }
       );
       setActionSuccess("Draft saved successfully.");
+      toast.success("Draft saved");
       onVersionUpdated?.(res);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -126,6 +132,7 @@ export function VersionEditor({
         body: JSON.stringify({ version: version.version }),
       });
       setActionSuccess(`Version ${res.version} successfully published!`);
+      toast.success("Version published", `v${res.version} is now immutable and runnable.`);
       onVersionPublished?.(res);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -141,10 +148,10 @@ export function VersionEditor({
   };
 
   return (
-    <div style={{ marginTop: "24px", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "20px" }}>
+    <div style={{ marginTop: "24px", border: "1px solid var(--border)", borderRadius: "8px", padding: "20px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
         <div>
-          <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#1e293b" }}>
+          <h3 style={{ fontSize: "18px", fontWeight: "600", color: "var(--text)" }}>
             Version {version.version}{" "}
             <span
               data-testid="version-status-badge"
@@ -152,8 +159,8 @@ export function VersionEditor({
                 fontSize: "12px",
                 padding: "2px 8px",
                 borderRadius: "4px",
-                background: version.status === "published" ? "#dcfce7" : "#fef3c7",
-                color: version.status === "published" ? "#15803d" : "#b45309",
+                background: version.status === "published" ? "var(--success-bg)" : "var(--warn-bg)",
+                color: version.status === "published" ? "var(--success-fg)" : "var(--warn-fg)",
                 fontWeight: "600",
                 textTransform: "uppercase",
               }}
@@ -162,7 +169,7 @@ export function VersionEditor({
             </span>
           </h3>
           {version.checksum && (
-            <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px", fontFamily: "monospace" }}>
+            <p style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "4px", fontFamily: "monospace" }}>
               Checksum: {version.checksum}
             </p>
           )}
@@ -177,8 +184,8 @@ export function VersionEditor({
             style={{
               padding: "6px 14px",
               borderRadius: "4px",
-              border: "1px solid #cbd5e1",
-              background: "#fff",
+              border: "1px solid var(--border)",
+              background: "var(--surface)",
               cursor: isValidating ? "not-allowed" : "pointer",
               fontSize: "13px",
             }}
@@ -194,8 +201,8 @@ export function VersionEditor({
               style={{
                 padding: "6px 14px",
                 borderRadius: "4px",
-                border: "1px solid #cbd5e1",
-                background: "#f8fafc",
+                border: "1px solid var(--border)",
+                background: "var(--surface-2)",
                 cursor: isSaving ? "not-allowed" : "pointer",
                 fontSize: "13px",
               }}
@@ -213,7 +220,7 @@ export function VersionEditor({
                 padding: "6px 14px",
                 borderRadius: "4px",
                 border: "none",
-                background: "#16a34a",
+                background: "var(--grad-success)",
                 color: "#fff",
                 cursor: isPublishing ? "not-allowed" : "pointer",
                 fontSize: "13px",
@@ -227,13 +234,13 @@ export function VersionEditor({
       </div>
 
       {parseError && (
-        <div data-testid="editor-error" style={{ padding: "10px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px", marginBottom: "16px", fontSize: "13px" }}>
+        <div data-testid="editor-error" style={{ padding: "10px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px", marginBottom: "16px", fontSize: "13px" }}>
           {parseError}
         </div>
       )}
 
       {actionSuccess && (
-        <div data-testid="editor-success" style={{ padding: "10px", background: "#dcfce7", color: "#15803d", borderRadius: "4px", marginBottom: "16px", fontSize: "13px" }}>
+        <div data-testid="editor-success" style={{ padding: "10px", background: "var(--success-bg)", color: "var(--success-fg)", borderRadius: "4px", marginBottom: "16px", fontSize: "13px" }}>
           {actionSuccess}
         </div>
       )}
@@ -245,7 +252,7 @@ export function VersionEditor({
         <div>
           <label
             htmlFor={jsonTextareaId}
-            style={{ display: "block", marginBottom: "8px", fontSize: "13px", fontWeight: "600", color: "#475569" }}
+            style={{ display: "block", marginBottom: "8px", fontSize: "13px", fontWeight: "600", color: "var(--text-soft)" }}
           >
             Workflow definition JSON
           </label>
@@ -263,23 +270,23 @@ export function VersionEditor({
               fontSize: "13px",
               padding: "12px",
               borderRadius: "6px",
-              border: "1px solid #cbd5e1",
-              background: isDraft ? "#fff" : "#f8fafc",
+              border: "1px solid var(--border)",
+              background: isDraft ? "#fff" : "var(--surface-2)",
             }}
           />
         </div>
 
         {/* Step List Preview */}
         <div>
-          <div style={{ marginBottom: "8px", fontSize: "13px", fontWeight: "600", color: "#475569" }}>
+          <div style={{ marginBottom: "8px", fontSize: "13px", fontWeight: "600", color: "var(--text-soft)" }}>
             Step Preview ({parsedSteps.length} steps)
           </div>
           <div
             data-testid="step-preview-list"
-            style={{ border: "1px solid #e2e8f0", borderRadius: "6px", padding: "12px", maxHeight: "400px", overflowY: "auto", background: "#f8fafc" }}
+            style={{ border: "1px solid var(--border)", borderRadius: "6px", padding: "12px", maxHeight: "400px", overflowY: "auto", background: "var(--surface-2)" }}
           >
             {parsedSteps.length === 0 ? (
-              <p style={{ color: "#94a3b8", fontSize: "13px", textAlign: "center", marginTop: "40px" }}>
+              <p style={{ color: "var(--text-dim)", fontSize: "13px", textAlign: "center", marginTop: "40px" }}>
                 No steps defined yet
               </p>
             ) : (
@@ -289,19 +296,19 @@ export function VersionEditor({
                   data-testid="step-preview-item"
                   style={{
                     padding: "10px",
-                    background: "#fff",
-                    border: "1px solid #e2e8f0",
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
                     borderRadius: "4px",
                     marginBottom: "8px",
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontWeight: "600", fontSize: "14px", color: "#1e293b" }}>{s.id}</span>
-                    <span style={{ fontSize: "11px", padding: "2px 6px", background: "#e0f2fe", color: "#0369a1", borderRadius: "4px" }}>
+                    <span style={{ fontWeight: "600", fontSize: "14px", color: "var(--text)" }}>{s.id}</span>
+                    <span style={{ fontSize: "11px", padding: "2px 6px", background: "var(--info-bg)", color: "var(--info-fg)", borderRadius: "4px" }}>
                       {s.type}
                     </span>
                   </div>
-                  <div style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "4px" }}>
                     next: <code>{s.next === null ? "null (end)" : s.next || "branching"}</code>
                   </div>
                 </div>

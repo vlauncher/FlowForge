@@ -124,34 +124,34 @@ export function WorkflowDetailPage({ orgId, workflowId }: { orgId: string; workf
     <div>
       <Header currentOrgId={orgId} />
       <main style={{ maxWidth: "1200px", margin: "40px auto", padding: "0 24px" }}>
-        {isLoading && <p data-testid="detail-loading" style={{ color: "#64748b" }}>Loading workflow...</p>}
+        {isLoading && <p data-testid="detail-loading" style={{ color: "var(--text-muted)" }}>Loading workflow...</p>}
 
         {error && (
-          <div data-testid="detail-error" style={{ padding: "12px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px", marginBottom: "16px" }}>
+          <div data-testid="detail-error" style={{ padding: "12px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px", marginBottom: "16px" }}>
             {error}
           </div>
         )}
 
         {!isLoading && workflow && (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid #e2e8f0", paddingBottom: "20px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid var(--border)", paddingBottom: "20px" }}>
               <div>
-                <h1 style={{ fontSize: "24px", fontWeight: "bold", color: "#1e293b" }}>
+                <h1 style={{ fontSize: "24px", fontWeight: "bold", color: "var(--text)" }}>
                   {workflow.display_name}
                 </h1>
                 {workflow.description && (
-                  <p style={{ color: "#64748b", marginTop: "4px" }}>{workflow.description}</p>
+                  <p style={{ color: "var(--text-muted)", marginTop: "4px" }}>{workflow.description}</p>
                 )}
                 <div style={{ marginTop: "8px", display: "flex", gap: "12px", alignItems: "center" }}>
-                  <span style={{ fontSize: "13px", color: "#64748b" }}>
+                  <span style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                     Active Version:
                   </span>
                   {workflow.current_version_id ? (
-                    <span data-testid="published-badge" style={{ padding: "2px 8px", background: "#dcfce7", color: "#166534", borderRadius: "4px", fontSize: "12px", fontWeight: "600" }}>
+                    <span data-testid="published-badge" style={{ padding: "2px 8px", background: "var(--success-bg)", color: "var(--success-fg)", borderRadius: "4px", fontSize: "12px", fontWeight: "600" }}>
                       Published
                     </span>
                   ) : (
-                    <span data-testid="unpublished-badge" style={{ padding: "2px 8px", background: "#fef3c7", color: "#92400e", borderRadius: "4px", fontSize: "12px" }}>
+                    <span data-testid="unpublished-badge" style={{ padding: "2px 8px", background: "var(--warn-bg)", color: "var(--warn-fg)", borderRadius: "4px", fontSize: "12px" }}>
                       No published version
                     </span>
                   )}
@@ -165,7 +165,7 @@ export function WorkflowDetailPage({ orgId, workflowId }: { orgId: string; workf
                     onClick={() => setIsTriggerModalOpen(true)}
                     style={{
                       padding: "8px 16px",
-                      background: "#16a34a",
+                      background: "var(--grad-success)",
                       color: "#fff",
                       border: "none",
                       borderRadius: "4px",
@@ -184,7 +184,7 @@ export function WorkflowDetailPage({ orgId, workflowId }: { orgId: string; workf
                     disabled={isCreatingDraft}
                     style={{
                       padding: "8px 16px",
-                      background: "#3b82f6",
+                      background: "var(--grad-primary)",
                       color: "#fff",
                       border: "none",
                       borderRadius: "4px",
@@ -211,7 +211,7 @@ export function WorkflowDetailPage({ orgId, workflowId }: { orgId: string; workf
 
             {/* Version History Selector */}
             <div style={{ display: "flex", gap: "8px", marginTop: "20px", alignItems: "center" }}>
-              <span style={{ fontSize: "13px", fontWeight: "600", color: "#475569" }}>Versions:</span>
+              <span style={{ fontSize: "13px", fontWeight: "600", color: "var(--text-soft)" }}>Versions:</span>
               {versions.map((v) => (
                 <button
                   key={v.id}
@@ -220,8 +220,8 @@ export function WorkflowDetailPage({ orgId, workflowId }: { orgId: string; workf
                   style={{
                     padding: "4px 10px",
                     borderRadius: "4px",
-                    border: selectedVersion?.version === v.version ? "2px solid #3b82f6" : "1px solid #cbd5e1",
-                    background: selectedVersion?.version === v.version ? "#eff6ff" : "#fff",
+                    border: selectedVersion?.version === v.version ? "2px solid var(--primary)" : "1px solid var(--border)",
+                    background: selectedVersion?.version === v.version ? "var(--info-bg)" : "#fff",
                     fontWeight: selectedVersion?.version === v.version ? "bold" : "normal",
                     fontSize: "12px",
                     cursor: "pointer",

@@ -26,8 +26,8 @@ export function AiStepBadge({
         marginTop: "8px",
         padding: "10px",
         borderRadius: "6px",
-        background: isInvalidOutput ? "#fef2f2" : "#f0fdf4",
-        border: `1px solid ${isInvalidOutput ? "#fca5a5" : "#bbf7d0"}`,
+        background: isInvalidOutput ? "var(--danger-bg)" : "var(--success-bg)",
+        border: `1px solid ${isInvalidOutput ? "var(--danger-border)" : "var(--success-bg)"}`,
       }}
     >
       <div
@@ -46,19 +46,19 @@ export function AiStepBadge({
               textTransform: "uppercase",
               padding: "2px 6px",
               borderRadius: "4px",
-              background: isInvalidOutput ? "#ef4444" : "#16a34a",
+              background: isInvalidOutput ? "var(--grad-danger)" : "var(--success)",
               color: "#ffffff",
             }}
           >
             AI {stepType === "llm_classify" ? "Classification" : "Transformation"}
           </span>
-          <span style={{ fontSize: "11px", color: "#64748b" }}>
+          <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
             Model: openrouter/free
           </span>
         </div>
 
         {durationMs != null && (
-          <span style={{ fontSize: "11px", color: "#64748b" }}>
+          <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
             Latency: {durationMs} ms
           </span>
         )}
@@ -68,7 +68,7 @@ export function AiStepBadge({
         <div
           data-testid="ai-invalid-output"
           style={{
-            color: "#991b1b",
+            color: "var(--danger-fg)",
             fontSize: "12px",
             fontWeight: "600",
             padding: "4px 0",
@@ -90,8 +90,8 @@ export function AiStepBadge({
                 style={{
                   fontSize: "13px",
                   fontWeight: "600",
-                  color: "#166534",
-                  background: "#dcfce7",
+                  color: "var(--success-fg)",
+                  background: "var(--success-bg)",
                   padding: "3px 8px",
                   borderRadius: "4px",
                 }}
@@ -103,7 +103,7 @@ export function AiStepBadge({
                   data-testid="ai-classify-confidence"
                   style={{
                     fontSize: "12px",
-                    color: "#15803d",
+                    color: "var(--success-fg)",
                     fontWeight: "500",
                   }}
                 >
@@ -112,15 +112,15 @@ export function AiStepBadge({
               )}
             </div>
           ) : (
-            <div data-testid="ai-transform-output" style={{ fontSize: "12px", color: "#166534" }}>
+            <div data-testid="ai-transform-output" style={{ fontSize: "12px", color: "var(--success-fg)" }}>
               <div style={{ fontWeight: "600", marginBottom: "4px" }}>Structured Output:</div>
               <pre
                 style={{
                   margin: 0,
                   padding: "6px",
-                  background: "#ffffff",
+                  background: "var(--surface)",
                   borderRadius: "4px",
-                  border: "1px solid #dcfce7",
+                  border: "1px solid var(--success-border)",
                   fontSize: "11px",
                 }}
               >

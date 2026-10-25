@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { RouterProvider, useRouter } from "./router/Router";
@@ -14,6 +14,11 @@ import { AuditEventsPage } from "./features/audit/AuditEventsPage";
 import { UsageDashboardPage } from "./features/usage/UsageDashboardPage";
 import { CredentialsPage } from "./features/credentials/CredentialsPage";
 import { HealthPage } from "./features/health/HealthPage";
+import { LandingPage } from "./features/landing/LandingPage";
+import { ToastProvider } from "./components/Toast";
+import { LiveProvider } from "./components/Live";
+import { Sidebar } from "./components/Sidebar";
+import { Logo } from "./components/Logo";
 import "./styles.css";
 
 const queryClient = new QueryClient({
@@ -27,11 +32,18 @@ const queryClient = new QueryClient({
 function AppRoutes() {
   const { user, isLoading } = useAuth();
   const { path, navigate, setRedirectAfterLogin, redirectAfterLogin } = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const toggle = () => setSidebarOpen((o) => !o);
+    window.addEventListener("ff:toggle-sidebar", toggle);
+    return () => window.removeEventListener("ff:toggle-sidebar", toggle);
+  }, []);
 
   useEffect(() => {
     if (isLoading) return;
 
-    const isPublic = path === "/login" || path === "/signup" || path === "/health";
+    const isPublic = path === "/login" || path === "/signup" || path === "/health" || path === "/";
 
     if (!user && !isPublic) {
       setRedirectAfterLogin(path);
@@ -52,13 +64,32 @@ function AppRoutes() {
 
   if (isLoading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <p style={{ color: "#64748b" }}>Loading FlowForge...</p>
+      <div className="boot" role="status" aria-label="Loading FlowForge">
+        <div className="boot-inner">
+          <div className="boot-ring" />
+          <Logo size={34} />
+          Loading FlowForge...
+        </div>
       </div>
     );
   }
 
-  // Route dispatching
+  if (!user && path === "/") {
+    return <LandingPage />;
+  }
+
+  const page = renderRoute();
+  if (path === "/login" || path === "/signup" || !user) {
+    return page;
+  }
+  return (
+    <div className="shell">
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="shell-main">{page}</div>
+    </div>
+  );
+
+  function renderRoute() {
   if (path === "/login") {
     return <LoginPage />;
   }
@@ -126,23 +157,34 @@ function AppRoutes() {
   }
 
   return (
-    <div style={{ padding: "40px", textAlign: "center" }}>
-      <h2>Page Not Found</h2>
-      <button onClick={() => navigate("/orgs")} style={{ marginTop: "16px" }}>
-        Go to Organizations
-      </button>
+    <div className="notfound">
+      <div>
+        <div className="big">404</div>
+        <h2 style={{ marginTop: "0.5rem" }}>Page Not Found</h2>
+        <p style={{ color: "var(--text-muted)", margin: "0.5rem 0 1.5rem" }}>
+          This route drifted off the graph.
+        </p>
+        <button className="btn" onClick={() => navigate("/orgs")}>
+          Go to Organizations
+        </button>
+      </div>
     </div>
   );
+  }
 }
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
-      </RouterProvider>
+      <ToastProvider>
+        <RouterProvider>
+          <AuthProvider>
+            <LiveProvider>
+              <AppRoutes />
+            </LiveProvider>
+          </AuthProvider>
+        </RouterProvider>
+      </ToastProvider>
     </QueryClientProvider>
   );
 }

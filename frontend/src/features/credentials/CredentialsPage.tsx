@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import React, { useEffect, useState, useCallback } from "react";
 import { Header } from "../../components/Header";
 import { apiFetch } from "../../api/client";
@@ -12,6 +13,7 @@ interface CredentialsPageProps {
 }
 
 export function CredentialsPage({ orgId }: CredentialsPageProps) {
+  const toast = useToast();
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,6 +99,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
       setProvider("");
       setHosts("");
       setScopes("");
+      toast.success("Credential stored", "The secret is encrypted at rest and never shown again.");
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setFormError(err.detail || err.message);
@@ -129,6 +132,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
       );
       setRotatingCred(null);
       setRotateSecret("");
+      toast.success("Secret rotated", "New requests use the rotated secret immediately.");
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setRotateError(err.detail || err.message);
@@ -141,7 +145,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "var(--surface-2)" }}>
       <Header />
       <main style={{ maxWidth: "1000px", margin: "24px auto", padding: "0 16px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
@@ -149,20 +153,20 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
             <h1 style={{ margin: "0 0 4px 0", fontSize: "22px", fontWeight: "700" }}>
               Integration Credentials
             </h1>
-            <p style={{ margin: 0, fontSize: "14px", color: "#64748b" }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-muted)" }}>
               Encrypted API keys and secrets for external tool adapters.
             </p>
           </div>
           <div style={{ display: "flex", gap: "12px" }}>
             <a
               href={`/orgs/${orgId}/workflows`}
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Workflows →
             </a>
             <a
               href={`/orgs/${orgId}/runs`}
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Runs →
             </a>
@@ -174,9 +178,9 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
             data-testid="credentials-error"
             style={{
               padding: "12px 16px",
-              background: "#fee2e2",
-              border: "1px solid #fca5a5",
-              color: "#991b1b",
+              background: "var(--danger-bg)",
+              border: "1px solid var(--danger-border)",
+              color: "var(--danger-fg)",
               borderRadius: "6px",
               marginBottom: "16px",
               fontSize: "14px",
@@ -190,9 +194,9 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
           {/* Credentials List */}
           <div
             style={{
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
+              border: "1px solid var(--border)",
               padding: "20px",
             }}
           >
@@ -201,11 +205,11 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
             </h2>
 
             {isLoading ? (
-              <div data-testid="credentials-loading" style={{ textAlign: "center", padding: "32px", color: "#64748b" }}>
+              <div data-testid="credentials-loading" style={{ textAlign: "center", padding: "32px", color: "var(--text-muted)" }}>
                 Loading credentials...
               </div>
             ) : credentials.length === 0 ? (
-              <div data-testid="no-credentials-message" style={{ textAlign: "center", padding: "32px", color: "#64748b" }}>
+              <div data-testid="no-credentials-message" style={{ textAlign: "center", padding: "32px", color: "var(--text-muted)" }}>
                 No credentials created yet. Add one using the form.
               </div>
             ) : (
@@ -216,13 +220,13 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                     data-testid={`credential-item-${cred.id}`}
                     style={{
                       padding: "14px",
-                      border: "1px solid #e2e8f0",
+                      border: "1px solid var(--border)",
                       borderRadius: "6px",
-                      background: "#f8fafc",
+                      background: "var(--surface-2)",
                     }}
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                      <span data-testid={`credential-name-${cred.id}`} style={{ fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>
+                      <span data-testid={`credential-name-${cred.id}`} style={{ fontWeight: "700", fontSize: "14px", color: "var(--text)" }}>
                         {cred.name}
                       </span>
                       <span
@@ -231,8 +235,8 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                           fontWeight: "600",
                           padding: "2px 8px",
                           borderRadius: "4px",
-                          background: "#e0e7ff",
-                          color: "#3730a3",
+                          background: "var(--info-bg)",
+                          color: "var(--info-fg)",
                           textTransform: "uppercase",
                         }}
                       >
@@ -240,22 +244,22 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                       </span>
                     </div>
 
-                    <div style={{ fontSize: "12px", color: "#64748b", marginBottom: "4px" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "4px" }}>
                       Hosts: {cred.allowed_hosts.length > 0 ? cred.allowed_hosts.join(", ") : "None specified"}
                     </div>
 
-                    <div style={{ fontSize: "12px", color: "#64748b", marginBottom: "4px" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "4px" }}>
                       Scopes: {cred.permission_scopes.length > 0 ? cred.permission_scopes.join(", ") : "None"}
                     </div>
 
-                    <div style={{ fontSize: "11px", color: "#94a3b8", marginBottom: "8px" }}>
+                    <div style={{ fontSize: "11px", color: "var(--text-dim)", marginBottom: "8px" }}>
                       Key ID: {cred.key_id} • Created: {new Date(cred.created_at).toLocaleDateString()}
                     </div>
 
                     {cred.rotated_at && (
                       <div
                         data-testid={`cred-rotated-at-${cred.id}`}
-                        style={{ fontSize: "11px", color: "#16a34a", marginBottom: "8px", fontWeight: "500" }}
+                        style={{ fontSize: "11px", color: "var(--success-fg)", marginBottom: "8px", fontWeight: "500" }}
                       >
                         Rotated: {new Date(cred.rotated_at).toLocaleString()}
                       </div>
@@ -272,9 +276,9 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                         padding: "4px 8px",
                         fontSize: "11px",
                         fontWeight: "500",
-                        color: "#475569",
-                        background: "#f1f5f9",
-                        border: "1px solid #cbd5e1",
+                        color: "var(--text-soft)",
+                        background: "var(--surface-2)",
+                        border: "1px solid var(--border)",
                         borderRadius: "4px",
                         cursor: "pointer",
                       }}
@@ -290,9 +294,9 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
           {/* Add Credential Form */}
           <div
             style={{
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
+              border: "1px solid var(--border)",
               padding: "20px",
               height: "fit-content",
             }}
@@ -306,8 +310,8 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                 data-testid="credential-form-error"
                 style={{
                   padding: "8px 12px",
-                  background: "#fee2e2",
-                  color: "#991b1b",
+                  background: "var(--danger-bg)",
+                  color: "var(--danger-fg)",
                   borderRadius: "4px",
                   marginBottom: "12px",
                   fontSize: "12px",
@@ -319,7 +323,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "#334155", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text)", marginBottom: "4px" }}>
                   Name
                 </label>
                 <input
@@ -328,13 +332,13 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                   placeholder="e.g. stripe_prod"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)", fontSize: "13px", boxSizing: "border-box" }}
                   required
                 />
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "#334155", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text)", marginBottom: "4px" }}>
                   Provider
                 </label>
                 <input
@@ -343,13 +347,13 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                   placeholder="e.g. stripe"
                   value={provider}
                   onChange={(e) => setProvider(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)", fontSize: "13px", boxSizing: "border-box" }}
                   required
                 />
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "#334155", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text)", marginBottom: "4px" }}>
                   Secret Key
                 </label>
                 <input
@@ -358,16 +362,16 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                   placeholder="Paste raw API token"
                   value={secret}
                   onChange={(e) => setSecret(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)", fontSize: "13px", boxSizing: "border-box" }}
                   required
                 />
-                <span style={{ fontSize: "11px", color: "#94a3b8" }}>
+                <span style={{ fontSize: "11px", color: "var(--text-dim)" }}>
                   Encrypted at rest with AES-256-GCM. Never shown again.
                 </span>
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "#334155", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text)", marginBottom: "4px" }}>
                   Allowed Hosts (comma-separated)
                 </label>
                 <input
@@ -376,12 +380,12 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                   placeholder="api.stripe.com, stripe.com"
                   value={hosts}
                   onChange={(e) => setHosts(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)", fontSize: "13px", boxSizing: "border-box" }}
                 />
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "#334155", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text)", marginBottom: "4px" }}>
                   Permission Scopes (comma-separated)
                 </label>
                 <input
@@ -390,7 +394,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                   placeholder="charges:write, customers:read"
                   value={scopes}
                   onChange={(e) => setScopes(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)", fontSize: "13px", boxSizing: "border-box" }}
                 />
               </div>
 
@@ -401,7 +405,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                 style={{
                   marginTop: "8px",
                   padding: "10px",
-                  background: "#2563eb",
+                  background: "var(--grad-primary)",
                   color: "#fff",
                   border: "none",
                   borderRadius: "6px",
@@ -435,7 +439,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
           >
             <div
               style={{
-                background: "#fff",
+                background: "var(--surface)",
                 borderRadius: "8px",
                 padding: "24px",
                 width: "400px",
@@ -451,8 +455,8 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                 <div
                   data-testid="rotate-error"
                   style={{
-                    background: "#fee2e2",
-                    color: "#991b1b",
+                    background: "var(--danger-bg)",
+                    color: "var(--danger-fg)",
                     padding: "8px 12px",
                     borderRadius: "4px",
                     fontSize: "12px",
@@ -465,7 +469,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
 
               <form onSubmit={handleRotateSubmit}>
                 <div style={{ marginBottom: "16px" }}>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "#334155", marginBottom: "4px" }}>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text)", marginBottom: "4px" }}>
                     New Secret
                   </label>
                   <input
@@ -474,7 +478,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                     placeholder="Enter new secret"
                     value={rotateSecret}
                     onChange={(e) => setRotateSecret(e.target.value)}
-                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "13px", boxSizing: "border-box" }}
+                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)", fontSize: "13px", boxSizing: "border-box" }}
                   />
                 </div>
 
@@ -484,8 +488,8 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                     onClick={() => setRotatingCred(null)}
                     style={{
                       padding: "8px 14px",
-                      background: "#f1f5f9",
-                      border: "1px solid #cbd5e1",
+                      background: "var(--surface-2)",
+                      border: "1px solid var(--border)",
                       borderRadius: "6px",
                       fontSize: "13px",
                       cursor: "pointer",
@@ -499,7 +503,7 @@ export function CredentialsPage({ orgId }: CredentialsPageProps) {
                     disabled={isRotating}
                     style={{
                       padding: "8px 14px",
-                      background: "#2563eb",
+                      background: "var(--grad-primary)",
                       color: "#fff",
                       border: "none",
                       borderRadius: "6px",

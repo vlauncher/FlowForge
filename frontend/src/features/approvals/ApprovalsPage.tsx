@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import { useState, useEffect, useCallback } from "react";
 import { Header } from "../../components/Header";
 import { apiFetch } from "../../api/client";
@@ -17,6 +18,7 @@ interface ApprovalsPageProps {
 }
 
 export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
+  const toast = useToast();
   const [approvals, setApprovals] = useState<Approval[]>([]);
   const [selectedState, setSelectedState] = useState<FilterState>("PENDING");
   const [nextCursor, setNextCursor] = useState<string | null>(null);
@@ -98,6 +100,11 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
       setApprovals((prev) =>
         prev.map((app) => (app.id === approvalId ? updated : app))
       );
+      if (decision === "approve") {
+        toast.success("Approved", "The run will resume momentarily.");
+      } else {
+        toast.warning("Rejected", "The run has been stopped by your decision.");
+      }
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         if (err.code === "INVALID_STATE_TRANSITION" || err.status === 409) {
@@ -126,22 +133,22 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
   const getStateBadgeStyle = (state: string) => {
     switch (state) {
       case "APPROVED":
-        return { background: "#dcfce7", color: "#166534" };
+        return { background: "var(--success-bg)", color: "var(--success-fg)" };
       case "PENDING":
-        return { background: "#fef9c3", color: "#854d0e" };
+        return { background: "var(--warn-bg)", color: "var(--warn-fg)" };
       case "REJECTED":
-        return { background: "#fee2e2", color: "#991b1b" };
+        return { background: "var(--danger-bg)", color: "var(--danger-fg)" };
       case "EXPIRED":
-        return { background: "#f3f4f6", color: "#6b7280" };
+        return { background: "var(--surface-2)", color: "var(--text-muted)" };
       case "CANCELLED":
-        return { background: "#f1f5f9", color: "#475569" };
+        return { background: "var(--surface-2)", color: "var(--text-soft)" };
       default:
-        return { background: "#e2e8f0", color: "#334155" };
+        return { background: "var(--border)", color: "var(--text)" };
     }
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "var(--surface-2)" }}>
       <Header currentOrgId={orgId} />
       <main style={{ maxWidth: "1000px", margin: "24px auto", padding: "0 16px" }}>
         <div
@@ -156,7 +163,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
             <h1 style={{ margin: "0 0 4px 0", fontSize: "22px", fontWeight: "700" }}>
               Approval Requests
             </h1>
-            <p style={{ margin: 0, fontSize: "14px", color: "#64748b" }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-muted)" }}>
               Human governance gate for workflow executions requiring verification.
             </p>
           </div>
@@ -164,14 +171,14 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
             <a
               href={`/orgs/${orgId}/runs`}
               data-testid="link-to-runs"
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               View Runs →
             </a>
             <a
               href={`/orgs/${orgId}/audit`}
               data-testid="link-to-audit"
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Audit Log →
             </a>
@@ -188,8 +195,8 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
               style={{
                 padding: "6px 12px",
                 borderRadius: "6px",
-                border: selectedState === st ? "2px solid #2563eb" : "1px solid #cbd5e1",
-                background: selectedState === st ? "#eff6ff" : "#fff",
+                border: selectedState === st ? "2px solid var(--primary)" : "1px solid var(--border)",
+                background: selectedState === st ? "var(--info-bg)" : "#fff",
                 fontWeight: selectedState === st ? "600" : "normal",
                 fontSize: "13px",
                 cursor: "pointer",
@@ -203,7 +210,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
         {isLoading && approvals.length === 0 ? (
           <div
             data-testid="approvals-loading"
-            style={{ padding: "40px", textAlign: "center", color: "#64748b" }}
+            style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}
           >
             Loading approvals...
           </div>
@@ -212,8 +219,8 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
             data-testid="approvals-error"
             style={{
               padding: "16px",
-              background: "#fee2e2",
-              color: "#991b1b",
+              background: "var(--danger-bg)",
+              color: "var(--danger-fg)",
               borderRadius: "8px",
             }}
           >
@@ -225,10 +232,10 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
             style={{
               padding: "48px",
               textAlign: "center",
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
-              color: "#64748b",
+              border: "1px solid var(--border)",
+              color: "var(--text-muted)",
             }}
           >
             No approval requests found for filter &quot;{selectedState}&quot;.
@@ -246,9 +253,9 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                   key={app.id}
                   data-testid={`approval-card-${app.id}`}
                   style={{
-                    background: "#fff",
+                    background: "var(--surface)",
                     borderRadius: "8px",
-                    border: "1px solid #e2e8f0",
+                    border: "1px solid var(--border)",
                     padding: "20px",
                     boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
                   }}
@@ -268,11 +275,11 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                       >
                         {renderApprovalSummary(app.summary)}
                       </h3>
-                      <div style={{ fontSize: "13px", color: "#64748b" }}>
+                      <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                         Run:{" "}
                         <a
                           href={`/orgs/${orgId}/runs/${app.run_id}`}
-                          style={{ color: "#2563eb", fontFamily: "monospace" }}
+                          style={{ color: "var(--link)", fontFamily: "monospace" }}
                         >
                           {app.run_id}
                         </a>{" "}
@@ -281,7 +288,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                           {app.assigned_role}
                         </span>
                       </div>
-                      <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>
+                      <div style={{ fontSize: "12px", color: "var(--text-dim)", marginTop: "4px" }}>
                         Expires: {new Date(app.expires_at).toLocaleString()} | Created:{" "}
                         {new Date(app.created_at).toLocaleString()}
                       </div>
@@ -306,9 +313,9 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                       data-testid={`approval-error-${app.id}`}
                       style={{
                         padding: "8px 12px",
-                        background: "#fee2e2",
-                        border: "1px solid #fecaca",
-                        color: "#991b1b",
+                        background: "var(--danger-bg)",
+                        border: "1px solid var(--danger-border)",
+                        color: "var(--danger-fg)",
                         borderRadius: "6px",
                         fontSize: "13px",
                         marginBottom: "12px",
@@ -323,9 +330,9 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                       data-testid={`approval-insufficient-role-${app.id}`}
                       style={{
                         padding: "8px 12px",
-                        background: "#fee2e2",
-                        border: "1px solid #fecaca",
-                        color: "#991b1b",
+                        background: "var(--danger-bg)",
+                        border: "1px solid var(--danger-border)",
+                        color: "var(--danger-fg)",
                         borderRadius: "6px",
                         fontSize: "13px",
                         marginBottom: "12px",
@@ -352,7 +359,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                           boxSizing: "border-box",
                           padding: "8px 12px",
                           borderRadius: "6px",
-                          border: "1px solid #cbd5e1",
+                          border: "1px solid var(--border)",
                           fontSize: "13px",
                           marginBottom: "10px",
                         }}
@@ -364,7 +371,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                           disabled={!allowed || isSubmitting}
                           style={{
                             padding: "8px 16px",
-                            background: allowed ? "#16a34a" : "#94a3b8",
+                            background: allowed ? "var(--success)" : "var(--text-dim)",
                             color: "#fff",
                             border: "none",
                             borderRadius: "6px",
@@ -381,7 +388,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                           disabled={!allowed || isSubmitting}
                           style={{
                             padding: "8px 16px",
-                            background: allowed ? "#dc2626" : "#94a3b8",
+                            background: allowed ? "var(--danger)" : "var(--text-dim)",
                             color: "#fff",
                             border: "none",
                             borderRadius: "6px",
@@ -399,10 +406,10 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                       style={{
                         marginTop: "8px",
                         padding: "8px 12px",
-                        background: "#f8fafc",
+                        background: "var(--surface-2)",
                         borderRadius: "6px",
                         fontSize: "13px",
-                        color: "#475569",
+                        color: "var(--text-soft)",
                       }}
                     >
                       {app.decision_comment ? (
@@ -413,7 +420,7 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                         <span>No comment provided.</span>
                       )}
                       {app.decided_at && (
-                        <span style={{ marginLeft: "12px", color: "#94a3b8", fontSize: "12px" }}>
+                        <span style={{ marginLeft: "12px", color: "var(--text-dim)", fontSize: "12px" }}>
                           Decided on {new Date(app.decided_at).toLocaleString()}
                         </span>
                       )}
@@ -431,8 +438,8 @@ export function ApprovalsPage({ orgId }: ApprovalsPageProps) {
                   disabled={isLoading}
                   style={{
                     padding: "8px 20px",
-                    background: "#fff",
-                    border: "1px solid #cbd5e1",
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
                     borderRadius: "6px",
                     cursor: "pointer",
                     fontSize: "13px",

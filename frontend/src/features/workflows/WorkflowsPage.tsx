@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import React, { useEffect, useState, useCallback } from "react";
 import { Header } from "../../components/Header";
 import { useRouter } from "../../router/Router";
@@ -10,6 +11,7 @@ type WorkflowPage = components["schemas"]["Page_WorkflowResponse_"];
 type Org = components["schemas"]["OrganizationResponse"];
 
 export function WorkflowsPage({ orgId }: { orgId: string }) {
+  const toast = useToast();
   const { navigate } = useRouter();
   const [org, setOrg] = useState<Org | null>(null);
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
@@ -112,6 +114,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
       });
 
       setWorkflows((prev) => [newWf, ...prev]);
+      toast.success("Workflow created", `${newWf.display_name} is ready for its first version.`);
       setShowNewModal(false);
       setDisplayName("");
       setDescription("");
@@ -136,7 +139,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "24px" }}>
           <div>
             <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>{org ? org.name : "Workflows"}</h1>
-            <p style={{ color: "#64748b", marginTop: "4px" }}>
+            <p style={{ color: "var(--text-muted)", marginTop: "4px" }}>
               {org && (
                 <span>
                   Role: <strong style={{ textTransform: "capitalize" }}>{org.my_role || "member"}</strong> • Plan: {org.plan?.toUpperCase() || "FREE"}
@@ -151,7 +154,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
               onClick={() => setShowNewModal(true)}
               style={{
                 padding: "8px 16px",
-                background: "#3b82f6",
+                background: "var(--grad-primary)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "4px",
@@ -166,7 +169,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
 
         {/* Filter Toolbar */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", cursor: "pointer", color: "#475569" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", cursor: "pointer", color: "var(--text-soft)" }}>
             <input
               type="checkbox"
               data-testid="workflows-include-archived"
@@ -178,21 +181,21 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
         </div>
 
         {/* Workflow list states */}
-        {isLoading && <p data-testid="workflows-loading" style={{ color: "#64748b" }}>Loading workflows...</p>}
+        {isLoading && <p data-testid="workflows-loading" style={{ color: "var(--text-muted)" }}>Loading workflows...</p>}
 
         {error && (
-          <div data-testid="workflows-error" style={{ padding: "12px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px", marginBottom: "16px" }}>
+          <div data-testid="workflows-error" style={{ padding: "12px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px", marginBottom: "16px" }}>
             {error}
           </div>
         )}
 
         {!isLoading && !error && workflows.length === 0 && (
-          <div data-testid="workflows-empty" style={{ padding: "40px", textAlign: "center", border: "1px dashed #cbd5e1", borderRadius: "8px" }}>
-            <p style={{ color: "#64748b", marginBottom: "16px" }}>No workflows found</p>
+          <div data-testid="workflows-empty" style={{ padding: "40px", textAlign: "center", border: "1px dashed var(--border)", borderRadius: "8px" }}>
+            <p style={{ color: "var(--text-muted)", marginBottom: "16px" }}>No workflows found</p>
             {canWriteWorkflow && (
               <button
                 onClick={() => setShowNewModal(true)}
-                style={{ padding: "8px 16px", background: "#3b82f6", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                style={{ padding: "8px 16px", background: "var(--grad-primary)", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
               >
                 Create your first workflow
               </button>
@@ -202,12 +205,12 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
 
         {!isLoading && workflows.length > 0 && (
           <div>
-            <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #e2e8f0", borderRadius: "8px", overflow: "hidden" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
               <thead>
-                <tr style={{ background: "#f8fafc", textAlign: "left", borderBottom: "1px solid #e2e8f0" }}>
-                  <th style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "#475569" }}>Name</th>
-                  <th style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "#475569" }}>Status</th>
-                  <th style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "#475569" }}>Created</th>
+                <tr style={{ background: "var(--surface-2)", textAlign: "left", borderBottom: "1px solid var(--border)" }}>
+                  <th style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "var(--text-soft)" }}>Name</th>
+                  <th style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "var(--text-soft)" }}>Status</th>
+                  <th style={{ padding: "12px 16px", fontSize: "14px", fontWeight: "600", color: "var(--text-soft)" }}>Created</th>
                 </tr>
               </thead>
               <tbody>
@@ -216,20 +219,20 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
                     key={wf.id}
                     data-testid="workflow-row"
                     onClick={() => navigate(`/orgs/${orgId}/workflows/${wf.id}`)}
-                    style={{ borderBottom: "1px solid #f1f5f9", cursor: "pointer" }}
+                    style={{ borderBottom: "1px solid var(--border-soft)", cursor: "pointer" }}
                   >
                     <td style={{ padding: "14px 16px" }}>
-                      <div style={{ fontWeight: "600", color: "#1e293b" }}>{wf.display_name}</div>
-                      {wf.description && <div style={{ fontSize: "13px", color: "#64748b", marginTop: "2px" }}>{wf.description}</div>}
+                      <div style={{ fontWeight: "600", color: "var(--text)" }}>{wf.display_name}</div>
+                      {wf.description && <div style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}>{wf.description}</div>}
                     </td>
                     <td style={{ padding: "14px 16px", fontSize: "14px" }}>
                       {wf.archived_at ? (
-                        <span style={{ padding: "2px 8px", background: "#f1f5f9", color: "#64748b", borderRadius: "4px", fontSize: "12px" }}>Archived</span>
+                        <span style={{ padding: "2px 8px", background: "var(--surface-2)", color: "var(--text-muted)", borderRadius: "4px", fontSize: "12px" }}>Archived</span>
                       ) : (
-                        <span style={{ padding: "2px 8px", background: "#dcfce7", color: "#166534", borderRadius: "4px", fontSize: "12px" }}>Active</span>
+                        <span style={{ padding: "2px 8px", background: "var(--success-bg)", color: "var(--success-fg)", borderRadius: "4px", fontSize: "12px" }}>Active</span>
                       )}
                     </td>
-                    <td style={{ padding: "14px 16px", fontSize: "13px", color: "#64748b" }}>
+                    <td style={{ padding: "14px 16px", fontSize: "13px", color: "var(--text-muted)" }}>
                       {new Date(wf.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -245,12 +248,12 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
                   disabled={isLoadingMore}
                   style={{
                     padding: "8px 20px",
-                    background: "#f8fafc",
-                    border: "1px solid #cbd5e1",
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--border)",
                     borderRadius: "4px",
                     cursor: isLoadingMore ? "not-allowed" : "pointer",
                     fontSize: "14px",
-                    color: "#334155",
+                    color: "var(--text)",
                   }}
                 >
                   {isLoadingMore ? "Loading more..." : "Load more"}
@@ -276,11 +279,11 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
               zIndex: 50,
             }}
           >
-            <div style={{ background: "#fff", padding: "24px", borderRadius: "8px", width: "100%", maxWidth: "480px" }}>
+            <div style={{ background: "var(--surface)", padding: "24px", borderRadius: "8px", width: "100%", maxWidth: "480px" }}>
               <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>New Workflow</h2>
 
               {formError && (
-                <div data-testid="new-wf-error" style={{ padding: "8px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px", marginBottom: "12px", fontSize: "14px" }}>
+                <div data-testid="new-wf-error" style={{ padding: "8px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px", marginBottom: "12px", fontSize: "14px" }}>
                   {formError}
                 </div>
               )}
@@ -296,13 +299,13 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="Document Analysis Pipeline"
-                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
                   />
                 </div>
 
                 <div style={{ marginBottom: "20px" }}>
                   <label htmlFor="wf-desc" style={{ display: "block", marginBottom: "6px", fontSize: "14px" }}>
-                    Description <span style={{ color: "#94a3b8" }}>(optional)</span>
+                    Description <span style={{ color: "var(--text-dim)" }}>(optional)</span>
                   </label>
                   <textarea
                     id="wf-desc"
@@ -311,7 +314,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Extract text, summarize, and index in vector store"
-                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
                   />
                 </div>
 
@@ -319,7 +322,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
                   <button
                     type="button"
                     onClick={() => setShowNewModal(false)}
-                    style={{ padding: "8px 16px", borderRadius: "4px", border: "1px solid #cbd5e1", background: "none", cursor: "pointer" }}
+                    style={{ padding: "8px 16px", borderRadius: "4px", border: "1px solid var(--border)", background: "none", cursor: "pointer" }}
                   >
                     Cancel
                   </button>
@@ -327,7 +330,7 @@ export function WorkflowsPage({ orgId }: { orgId: string }) {
                     type="submit"
                     data-testid="new-wf-submit"
                     disabled={isSubmitting}
-                    style={{ padding: "8px 16px", borderRadius: "4px", background: "#3b82f6", color: "#fff", border: "none", cursor: isSubmitting ? "not-allowed" : "pointer" }}
+                    style={{ padding: "8px 16px", borderRadius: "4px", background: "var(--grad-primary)", color: "#fff", border: "none", cursor: isSubmitting ? "not-allowed" : "pointer" }}
                   >
                     {isSubmitting ? "Creating..." : "Create Workflow"}
                   </button>

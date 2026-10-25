@@ -8,17 +8,17 @@ export function ValidationErrors({ errors }: { errors: ValidationIssue[] }) {
   return (
     <div
       style={{
-        background: "#fee2e2",
-        border: "1px solid #f87171",
+        background: "var(--danger-bg)",
+        border: "1px solid var(--danger-border)",
         borderRadius: "6px",
         padding: "16px",
         marginBottom: "16px",
       }}
     >
-      <h4 style={{ color: "#991b1b", margin: "0 0 8px 0", fontSize: "14px", fontWeight: "600" }}>
+      <h4 style={{ color: "var(--danger-fg)", margin: "0 0 8px 0", fontSize: "14px", fontWeight: "600" }}>
         Validation Issues ({errors.length})
       </h4>
-      <ul role="alert" data-testid="validation-errors-list" style={{ margin: 0, paddingLeft: "20px", color: "#b91c1c", fontSize: "13px" }}>
+      <ul role="alert" data-testid="validation-errors-list" style={{ margin: 0, paddingLeft: "20px", color: "var(--danger-fg)", fontSize: "13px" }}>
         {errors.map((err, idx) => (
           <li key={idx} style={{ marginBottom: "6px" }}>
             <span style={{ fontWeight: "600", fontFamily: "monospace", marginRight: "6px" }}>
@@ -26,12 +26,12 @@ export function ValidationErrors({ errors }: { errors: ValidationIssue[] }) {
             </span>
             <span>{err.message}</span>
             {err.field && (
-              <span style={{ color: "#7f1d1d", marginLeft: "6px", fontSize: "12px", fontFamily: "monospace" }}>
+              <span style={{ color: "var(--danger-fg)", marginLeft: "6px", fontSize: "12px", fontFamily: "monospace" }}>
                 ({err.field})
               </span>
             )}
             {err.step_ids && err.step_ids.length > 0 && (
-              <span style={{ marginLeft: "6px", fontSize: "12px", color: "#6b7280" }}>
+              <span style={{ marginLeft: "6px", fontSize: "12px", color: "var(--text-muted)" }}>
                 steps: {err.step_ids.join(", ")}
               </span>
             )}

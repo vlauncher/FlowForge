@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import { useRouter } from "../router/Router";
 import { apiFetch } from "../api/client";
+import { LogOut, Menu } from "lucide-react";
+import { Logo } from "./Logo";
+import { NotificationBell } from "./NotificationBell";
 import type { components } from "../api/schema";
 
 type Org = components["schemas"]["OrganizationResponse"];
@@ -39,26 +42,35 @@ export function Header({ currentOrgId }: { currentOrgId?: string }) {
     navigate("/login");
   };
 
+  const initials = (user?.display_name || "?")
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
-    <header className="header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 24px", borderBottom: "1px solid #e2e8f0" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+    <header className="header">
+      <div className="header-left">
         <button
-          onClick={() => navigate("/orgs")}
-          style={{ background: "none", border: "none", fontSize: "18px", fontWeight: "bold", cursor: "pointer", color: "#1e293b" }}
+          className="icon-btn menu-btn"
+          aria-label="Open navigation"
+          onClick={() => window.dispatchEvent(new Event("ff:toggle-sidebar"))}
         >
-          FlowForge
+          <Menu size={18} />
+        </button>
+        <button className="header-brand" onClick={() => navigate("/orgs")}>
+          <Logo size={24} animated={false} /> FlowForge
         </button>
         {user && orgs.length > 0 && (
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <label htmlFor="org-select" style={{ fontSize: "14px", color: "#64748b" }}>Organization:</label>
-            <select
-              id="org-select"
-              data-testid="org-switcher"
-              value={currentOrgId || ""}
-              onChange={handleOrgChange}
-              style={{ padding: "6px 10px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
-            >
-              <option value="" disabled>Select Organization</option>
+            <label htmlFor="org-select" className="header-label">
+              Organization:
+            </label>
+            <select id="org-select" data-testid="org-switcher" value={currentOrgId || ""} onChange={handleOrgChange}>
+              <option value="" disabled>
+                Select Organization
+              </option>
               {orgs.map((o) => (
                 <option key={o.id} value={o.id}>
                   {o.name} ({o.my_role})
@@ -70,30 +82,29 @@ export function Header({ currentOrgId }: { currentOrgId?: string }) {
       </div>
 
       {user ? (
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <span data-testid="user-display-name" style={{ fontSize: "14px", color: "#334155" }}>
-            {user.display_name}
-          </span>
+        <div className="header-right">
+          <NotificationBell />
+          <div className="user-chip">
+            <span className="avatar" aria-hidden="true">
+              {initials}
+            </span>
+            <span data-testid="user-display-name">{user.display_name}</span>
+          </div>
           <button
             data-testid="logout-button"
+            className="btn btn-ghost"
+            style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
             onClick={handleLogout}
-            style={{ padding: "6px 12px", borderRadius: "4px", background: "#f1f5f9", border: "1px solid #cbd5e1", cursor: "pointer" }}
           >
-            Log out
+            <LogOut size={14} /> Log out
           </button>
         </div>
       ) : (
-        <div style={{ display: "flex", gap: "12px" }}>
-          <button
-            onClick={() => navigate("/login")}
-            style={{ padding: "6px 12px", borderRadius: "4px", border: "none", background: "none", cursor: "pointer" }}
-          >
+        <div className="header-right">
+          <button className="btn btn-ghost" onClick={() => navigate("/login")}>
             Log in
           </button>
-          <button
-            onClick={() => navigate("/signup")}
-            style={{ padding: "6px 12px", borderRadius: "4px", background: "#3b82f6", color: "#fff", border: "none", cursor: "pointer" }}
-          >
+          <button className="btn" onClick={() => navigate("/signup")}>
             Sign up
           </button>
         </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
 import { useRouter } from "../../router/Router";
 import { ApiError } from "../../api/errors";
+import { AuthLayout } from "../../components/AuthLayout";
 
 export function SignupPage() {
   const { signup } = useAuth();
@@ -83,13 +84,12 @@ export function SignupPage() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "60px auto", padding: "24px", border: "1px solid #e2e8f0", borderRadius: "8px" }}>
-      <h2 style={{ marginBottom: "20px" }}>Create an Account</h2>
+    <AuthLayout title="Create an Account" subtitle="Spin up a workspace in under a minute.">
 
       {fieldErrors.general && (
         <div
           data-testid="signup-error"
-          style={{ padding: "10px", marginBottom: "16px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px" }}
+          style={{ padding: "10px", marginBottom: "16px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px" }}
         >
           {fieldErrors.general}
         </div>
@@ -107,10 +107,10 @@ export function SignupPage() {
             required
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
           />
           {fieldErrors.displayName && (
-            <p data-testid="error-name" style={{ color: "#dc2626", fontSize: "12px", marginTop: "4px" }}>
+            <p data-testid="error-name" style={{ color: "var(--danger-fg)", fontSize: "12px", marginTop: "4px" }}>
               {fieldErrors.displayName}
             </p>
           )}
@@ -127,10 +127,10 @@ export function SignupPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
           />
           {fieldErrors.email && (
-            <p data-testid="error-email" style={{ color: "#dc2626", fontSize: "12px", marginTop: "4px" }}>
+            <p data-testid="error-email" style={{ color: "var(--danger-fg)", fontSize: "12px", marginTop: "4px" }}>
               {fieldErrors.email}
             </p>
           )}
@@ -147,10 +147,10 @@ export function SignupPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
           />
           {fieldErrors.password && (
-            <p data-testid="error-password" style={{ color: "#dc2626", fontSize: "12px", marginTop: "4px" }}>
+            <p data-testid="error-password" style={{ color: "var(--danger-fg)", fontSize: "12px", marginTop: "4px" }}>
               {fieldErrors.password}
             </p>
           )}
@@ -163,7 +163,7 @@ export function SignupPage() {
           style={{
             width: "100%",
             padding: "10px",
-            background: isSubmitting ? "#93c5fd" : "#3b82f6",
+            background: isSubmitting ? "var(--primary-dim)" : "var(--grad-primary)",
             color: "#fff",
             border: "none",
             borderRadius: "4px",
@@ -180,11 +180,11 @@ export function SignupPage() {
         <button
           data-testid="link-login"
           onClick={() => navigate("/login")}
-          style={{ background: "none", border: "none", color: "#3b82f6", cursor: "pointer", textDecoration: "underline" }}
+          style={{ background: "none", border: "none", color: "var(--link)", cursor: "pointer", textDecoration: "underline" }}
         >
           Log in
         </button>
       </p>
-    </div>
+    </AuthLayout>
   );
 }

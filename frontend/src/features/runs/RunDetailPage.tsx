@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Header } from "../../components/Header";
 import { apiFetch } from "../../api/client";
@@ -18,6 +19,7 @@ interface RunDetailPageProps {
 const TERMINAL_STATES = new Set(["SUCCEEDED", "FAILED", "CANCELLED"]);
 
 export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
+  const toast = useToast();
   const [run, setRun] = useState<RunDetail | null>(null);
   const [steps, setSteps] = useState<StepAttempt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,6 +91,7 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
       const updatedRun = await apiFetch<RunDetail>(`/v1/runs/${runId}/cancel`, {
         method: "POST",
       });
+      toast.info("Cancellation requested", "The run will stop at the next step boundary.");
       setRun(updatedRun);
       await fetchRunData();
     } catch (err: unknown) {
@@ -109,6 +112,7 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
       const updatedRun = await apiFetch<RunDetail>(`/v1/runs/${runId}/retry`, {
         method: "POST",
       });
+      toast.success("Retry queued", "A worker will pick the run up shortly.");
       setRun(updatedRun);
       await fetchRunData();
     } catch (err: unknown) {
@@ -125,19 +129,19 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
   const getStateBadgeStyle = (state: string) => {
     switch (state) {
       case "SUCCEEDED":
-        return { background: "#dcfce7", color: "#166534" };
+        return { background: "var(--success-bg)", color: "var(--success-fg)" };
       case "RUNNING":
-        return { background: "#dbeafe", color: "#1e40af" };
+        return { background: "var(--info-bg)", color: "var(--info-fg)" };
       case "QUEUED":
-        return { background: "#fef3c7", color: "#92400e" };
+        return { background: "var(--warn-bg)", color: "var(--warn-fg)" };
       case "WAITING_APPROVAL":
-        return { background: "#fef9c3", color: "#854d0e" };
+        return { background: "var(--warn-bg)", color: "var(--warn-fg)" };
       case "FAILED":
-        return { background: "#fee2e2", color: "#991b1b" };
+        return { background: "var(--danger-bg)", color: "var(--danger-fg)" };
       case "CANCELLED":
-        return { background: "#f1f5f9", color: "#475569" };
+        return { background: "var(--surface-2)", color: "var(--text-soft)" };
       default:
-        return { background: "#e2e8f0", color: "#334155" };
+        return { background: "var(--border)", color: "var(--text)" };
     }
   };
 
@@ -145,14 +149,14 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
   const canRetry = run && run.state === "FAILED";
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "var(--surface-2)" }}>
       <Header />
       <main style={{ maxWidth: "1000px", margin: "24px auto", padding: "0 16px" }}>
         <div style={{ marginBottom: "16px" }}>
           <a
             href={`/orgs/${orgId}/runs`}
             data-testid="link-back-runs"
-            style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+            style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
           >
             ← Back to Runs
           </a>
@@ -163,9 +167,9 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
             data-testid="action-error"
             style={{
               padding: "12px 16px",
-              background: "#fee2e2",
-              border: "1px solid #fca5a5",
-              color: "#991b1b",
+              background: "var(--danger-bg)",
+              border: "1px solid var(--danger-border)",
+              color: "var(--danger-fg)",
               borderRadius: "6px",
               marginBottom: "16px",
               fontSize: "14px",
@@ -176,11 +180,11 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
         )}
 
         {isLoading && !run ? (
-          <div data-testid="run-loading" style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>
+          <div data-testid="run-loading" style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>
             Loading execution details...
           </div>
         ) : error ? (
-          <div data-testid="run-error" style={{ padding: "16px", background: "#fee2e2", color: "#991b1b", borderRadius: "8px" }}>
+          <div data-testid="run-error" style={{ padding: "16px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "8px" }}>
             {error}
           </div>
         ) : run ? (
@@ -189,9 +193,9 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
             <div
               data-testid="run-header-card"
               style={{
-                background: "#fff",
+                background: "var(--surface)",
                 borderRadius: "8px",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--border)",
                 padding: "24px",
                 marginBottom: "24px",
               }}
@@ -199,9 +203,9 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
                   <h1 style={{ margin: "0 0 8px 0", fontSize: "20px", fontWeight: "700" }}>
-                    Run <span style={{ fontFamily: "monospace", fontSize: "16px", color: "#64748b" }}>{run.id}</span>
+                    Run <span style={{ fontFamily: "monospace", fontSize: "16px", color: "var(--text-muted)" }}>{run.id}</span>
                   </h1>
-                  <div style={{ fontSize: "13px", color: "#64748b" }}>
+                  <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                     Version: v{run.workflow_version} | Trigger: {run.trigger_kind} | Started:{" "}
                     {run.started_at ? new Date(run.started_at).toLocaleString() : "Pending"}
                   </div>
@@ -228,7 +232,7 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
                       disabled={isSubmittingAction}
                       style={{
                         padding: "6px 14px",
-                        background: "#ef4444",
+                        background: "var(--grad-danger)",
                         color: "#fff",
                         border: "none",
                         borderRadius: "6px",
@@ -248,7 +252,7 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
                       disabled={isSubmittingAction}
                       style={{
                         padding: "6px 14px",
-                        background: "#2563eb",
+                        background: "var(--grad-primary)",
                         color: "#fff",
                         border: "none",
                         borderRadius: "6px",
@@ -269,10 +273,10 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
                   style={{
                     marginTop: "16px",
                     padding: "12px",
-                    background: "#fef2f2",
-                    border: "1px solid #fecaca",
+                    background: "var(--danger-bg)",
+                    border: "1px solid var(--danger-border)",
                     borderRadius: "6px",
-                    color: "#991b1b",
+                    color: "var(--danger-fg)",
                     fontSize: "13px",
                   }}
                 >
@@ -296,9 +300,9 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
             <div
               data-testid="step-timeline-card"
               style={{
-                background: "#fff",
+                background: "var(--surface)",
                 borderRadius: "8px",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--border)",
                 padding: "24px",
                 marginBottom: "24px",
               }}
@@ -314,9 +318,9 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--surface)",
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
                   padding: "16px",
                 }}
               >
@@ -326,8 +330,8 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
                   style={{
                     margin: 0,
                     padding: "8px",
-                    background: "#f8fafc",
-                    border: "1px solid #e2e8f0",
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--border)",
                     borderRadius: "4px",
                     fontSize: "12px",
                     overflowX: "auto",
@@ -339,9 +343,9 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
 
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--surface)",
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
                   padding: "16px",
                 }}
               >
@@ -351,8 +355,8 @@ export function RunDetailPage({ orgId, runId }: RunDetailPageProps) {
                   style={{
                     margin: 0,
                     padding: "8px",
-                    background: "#f8fafc",
-                    border: "1px solid #e2e8f0",
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--border)",
                     borderRadius: "4px",
                     fontSize: "12px",
                     overflowX: "auto",

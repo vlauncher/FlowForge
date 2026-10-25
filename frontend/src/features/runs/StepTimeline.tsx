@@ -22,19 +22,19 @@ export function StepTimeline({ steps }: StepTimelineProps) {
   const getStatusBadgeStyle = (status: string) => {
     switch (status) {
       case "SUCCEEDED":
-        return { background: "#dcfce7", color: "#166534" };
+        return { background: "var(--success-bg)", color: "var(--success-fg)" };
       case "FAILED":
-        return { background: "#fee2e2", color: "#991b1b" };
+        return { background: "var(--danger-bg)", color: "var(--danger-fg)" };
       case "RUNNING":
-        return { background: "#dbeafe", color: "#1e40af" };
+        return { background: "var(--info-bg)", color: "var(--info-fg)" };
       default:
-        return { background: "#f1f5f9", color: "#475569" };
+        return { background: "var(--surface-2)", color: "var(--text-soft)" };
     }
   };
 
   if (steps.length === 0) {
     return (
-      <div data-testid="no-steps-message" style={{ color: "#64748b", fontSize: "13px" }}>
+      <div data-testid="no-steps-message" style={{ color: "var(--text-muted)", fontSize: "13px" }}>
         No step attempts recorded yet.
       </div>
     );
@@ -52,9 +52,9 @@ export function StepTimeline({ steps }: StepTimelineProps) {
             data-testid={`step-attempt-${stepId}`}
             style={{
               padding: "16px",
-              border: "1px solid #e2e8f0",
+              border: "1px solid var(--border)",
               borderRadius: "8px",
-              background: "#ffffff",
+              background: "var(--surface)",
             }}
           >
             <div
@@ -64,18 +64,18 @@ export function StepTimeline({ steps }: StepTimelineProps) {
                 alignItems: "center",
                 marginBottom: "12px",
                 paddingBottom: "8px",
-                borderBottom: "1px solid #f1f5f9",
+                borderBottom: "1px solid var(--border-soft)",
               }}
             >
               <div>
-                <span style={{ fontWeight: "700", fontSize: "15px", color: "#0f172a" }}>
+                <span style={{ fontWeight: "700", fontSize: "15px", color: "var(--text)" }}>
                   {stepId}
                 </span>
-                <span style={{ marginLeft: "8px", fontSize: "12px", color: "#64748b" }}>
+                <span style={{ marginLeft: "8px", fontSize: "12px", color: "var(--text-muted)" }}>
                   ({latestAttempt.step_type})
                 </span>
               </div>
-              <span style={{ fontSize: "12px", color: "#64748b" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                 {attempts.length} attempt{attempts.length > 1 ? "s" : ""}
               </span>
             </div>
@@ -87,8 +87,8 @@ export function StepTimeline({ steps }: StepTimelineProps) {
                   data-testid={`step-attempt-${att.step_id}-${att.attempt_no}`}
                   style={{
                     padding: "10px 12px",
-                    background: "#f8fafc",
-                    border: "1px solid #e2e8f0",
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--border)",
                     borderRadius: "6px",
                   }}
                 >
@@ -114,7 +114,7 @@ export function StepTimeline({ steps }: StepTimelineProps) {
                       {att.error_code ? ` (${att.error_code})` : ""}
                     </span>
 
-                    <span style={{ fontSize: "12px", color: "#64748b" }}>
+                    <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                       Duration: {att.duration_ms != null ? `${att.duration_ms} ms` : "running"}
                     </span>
                   </div>
@@ -124,8 +124,8 @@ export function StepTimeline({ steps }: StepTimelineProps) {
                       data-testid={`attempt-error-${att.step_id}-${att.attempt_no}`}
                       style={{
                         fontSize: "12px",
-                        color: "#b91c1c",
-                        background: "#fef2f2",
+                        color: "var(--danger-fg)",
+                        background: "var(--danger-bg)",
                         padding: "6px 8px",
                         borderRadius: "4px",
                         marginTop: "6px",
@@ -152,8 +152,8 @@ export function StepTimeline({ steps }: StepTimelineProps) {
                         style={{
                           margin: "6px 0 0 0",
                           padding: "8px",
-                          background: "#fff",
-                          border: "1px solid #cbd5e1",
+                          background: "var(--surface)",
+                          border: "1px solid var(--border)",
                           borderRadius: "4px",
                           fontSize: "11px",
                           overflowX: "auto",

@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { useRouter } from "../../router/Router";
@@ -9,6 +10,7 @@ type Org = components["schemas"]["OrganizationResponse"];
 type OrgPage = components["schemas"]["Page_OrganizationResponse_"];
 
 export function OrgsPage() {
+  const toast = useToast();
   const { navigate } = useRouter();
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +71,7 @@ export function OrgsPage() {
       setShowCreateModal(false);
       setName("");
       setSlug("");
+      toast.success("Organization created", `${newOrg.name} is ready.`);
       handleSelectOrg(newOrg.id);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -88,31 +91,31 @@ export function OrgsPage() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
           <div>
             <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>Organizations</h1>
-            <p style={{ color: "#64748b", marginTop: "4px" }}>Select or create an organization to manage workflows</p>
+            <p style={{ color: "var(--text-muted)", marginTop: "4px" }}>Select or create an organization to manage workflows</p>
           </div>
           <button
             data-testid="create-org-btn"
             onClick={() => setShowCreateModal(true)}
-            style={{ padding: "8px 16px", background: "#3b82f6", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "500" }}
+            style={{ padding: "8px 16px", background: "var(--grad-primary)", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "500" }}
           >
             Create Organization
           </button>
         </div>
 
-        {isLoading && <p data-testid="orgs-loading" style={{ color: "#64748b" }}>Loading organizations...</p>}
+        {isLoading && <p data-testid="orgs-loading" style={{ color: "var(--text-muted)" }}>Loading organizations...</p>}
 
         {error && (
-          <div data-testid="orgs-error" style={{ padding: "12px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px", marginBottom: "16px" }}>
+          <div data-testid="orgs-error" style={{ padding: "12px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px", marginBottom: "16px" }}>
             {error}
           </div>
         )}
 
         {!isLoading && !error && orgs.length === 0 && (
-          <div data-testid="orgs-empty" style={{ padding: "40px", textAlign: "center", border: "1px dashed #cbd5e1", borderRadius: "8px" }}>
-            <p style={{ color: "#64748b", marginBottom: "16px" }}>You are not a member of any organization yet.</p>
+          <div data-testid="orgs-empty" style={{ padding: "40px", textAlign: "center", border: "1px dashed var(--border)", borderRadius: "8px" }}>
+            <p style={{ color: "var(--text-muted)", marginBottom: "16px" }}>You are not a member of any organization yet.</p>
             <button
               onClick={() => setShowCreateModal(true)}
-              style={{ padding: "8px 16px", background: "#3b82f6", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+              style={{ padding: "8px 16px", background: "var(--grad-primary)", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
             >
               Create your first organization
             </button>
@@ -130,15 +133,15 @@ export function OrgsPage() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "20px",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--border)",
                 borderRadius: "8px",
                 cursor: "pointer",
                 transition: "border-color 0.2s",
               }}
             >
               <div>
-                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#1e293b" }}>{org.name}</h3>
-                <p style={{ fontSize: "14px", color: "#64748b", marginTop: "4px" }}>
+                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "var(--text)" }}>{org.name}</h3>
+                <p style={{ fontSize: "14px", color: "var(--text-muted)", marginTop: "4px" }}>
                   slug: <code>{org.slug}</code> • Plan: <span style={{ textTransform: "uppercase", fontSize: "12px", fontWeight: "bold" }}>{org.plan}</span>
                 </p>
               </div>
@@ -147,8 +150,8 @@ export function OrgsPage() {
                   style={{
                     display: "inline-block",
                     padding: "4px 8px",
-                    background: "#f1f5f9",
-                    color: "#475569",
+                    background: "var(--surface-2)",
+                    color: "var(--text-soft)",
                     borderRadius: "4px",
                     fontSize: "12px",
                     fontWeight: "500",
@@ -177,11 +180,11 @@ export function OrgsPage() {
               zIndex: 50,
             }}
           >
-            <div style={{ background: "#fff", padding: "24px", borderRadius: "8px", width: "100%", maxWidth: "440px" }}>
+            <div style={{ background: "var(--surface)", padding: "24px", borderRadius: "8px", width: "100%", maxWidth: "440px" }}>
               <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}>Create Organization</h2>
 
               {createError && (
-                <div data-testid="org-create-error" style={{ padding: "8px", background: "#fee2e2", color: "#b91c1c", borderRadius: "4px", marginBottom: "12px", fontSize: "14px" }}>
+                <div data-testid="org-create-error" style={{ padding: "8px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "4px", marginBottom: "12px", fontSize: "14px" }}>
                   {createError}
                 </div>
               )}
@@ -197,13 +200,13 @@ export function OrgsPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Acme Corp"
-                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
                   />
                 </div>
 
                 <div style={{ marginBottom: "20px" }}>
                   <label htmlFor="modal-org-slug" style={{ display: "block", marginBottom: "6px", fontSize: "14px" }}>
-                    Slug <span style={{ color: "#94a3b8" }}>(optional, auto-derived if empty)</span>
+                    Slug <span style={{ color: "var(--text-dim)" }}>(optional, auto-derived if empty)</span>
                   </label>
                   <input
                     id="modal-org-slug"
@@ -212,7 +215,7 @@ export function OrgsPage() {
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     placeholder="acme-corp"
-                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1" }}
+                    style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid var(--border)" }}
                   />
                 </div>
 
@@ -220,7 +223,7 @@ export function OrgsPage() {
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}
-                    style={{ padding: "8px 16px", borderRadius: "4px", border: "1px solid #cbd5e1", background: "none", cursor: "pointer" }}
+                    style={{ padding: "8px 16px", borderRadius: "4px", border: "1px solid var(--border)", background: "none", cursor: "pointer" }}
                   >
                     Cancel
                   </button>
@@ -228,7 +231,7 @@ export function OrgsPage() {
                     type="submit"
                     data-testid="org-submit"
                     disabled={isCreating}
-                    style={{ padding: "8px 16px", borderRadius: "4px", background: "#3b82f6", color: "#fff", border: "none", cursor: isCreating ? "not-allowed" : "pointer" }}
+                    style={{ padding: "8px 16px", borderRadius: "4px", background: "var(--grad-primary)", color: "#fff", border: "none", cursor: isCreating ? "not-allowed" : "pointer" }}
                   >
                     {isCreating ? "Creating..." : "Create"}
                   </button>

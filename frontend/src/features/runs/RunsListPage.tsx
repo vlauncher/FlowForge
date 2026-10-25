@@ -68,37 +68,37 @@ export function RunsListPage({ orgId }: { orgId: string }) {
   const getStateBadgeStyle = (state: string) => {
     switch (state) {
       case "SUCCEEDED":
-        return { background: "#dcfce7", color: "#166534" };
+        return { background: "var(--success-bg)", color: "var(--success-fg)" };
       case "RUNNING":
-        return { background: "#dbeafe", color: "#1e40af" };
+        return { background: "var(--info-bg)", color: "var(--info-fg)" };
       case "QUEUED":
-        return { background: "#fef3c7", color: "#92400e" };
+        return { background: "var(--warn-bg)", color: "var(--warn-fg)" };
       case "WAITING_APPROVAL":
-        return { background: "#fef9c3", color: "#854d0e" };
+        return { background: "var(--warn-bg)", color: "var(--warn-fg)" };
       case "FAILED":
-        return { background: "#fee2e2", color: "#991b1b" };
+        return { background: "var(--danger-bg)", color: "var(--danger-fg)" };
       case "CANCELLED":
-        return { background: "#f1f5f9", color: "#475569" };
+        return { background: "var(--surface-2)", color: "var(--text-soft)" };
       default:
-        return { background: "#e2e8f0", color: "#334155" };
+        return { background: "var(--border)", color: "var(--text)" };
     }
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "var(--surface-2)" }}>
       <Header />
       <main style={{ maxWidth: "1000px", margin: "24px auto", padding: "0 16px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
           <div>
             <h1 style={{ margin: "0 0 4px 0", fontSize: "22px", fontWeight: "700" }}>Workflow Runs</h1>
-            <p style={{ margin: 0, fontSize: "14px", color: "#64748b" }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-muted)" }}>
               Execution history and state progression across workflows.
             </p>
           </div>
           <a
             href={`/orgs/${orgId}/workflows`}
             data-testid="link-to-workflows"
-            style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+            style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
           >
             View Workflows →
           </a>
@@ -114,8 +114,8 @@ export function RunsListPage({ orgId }: { orgId: string }) {
               style={{
                 padding: "6px 12px",
                 borderRadius: "6px",
-                border: selectedState === st ? "2px solid #2563eb" : "1px solid #cbd5e1",
-                background: selectedState === st ? "#eff6ff" : "#fff",
+                border: selectedState === st ? "2px solid var(--primary)" : "1px solid var(--border)",
+                background: selectedState === st ? "var(--info-bg)" : "#fff",
                 fontWeight: selectedState === st ? "600" : "normal",
                 fontSize: "13px",
                 cursor: "pointer",
@@ -127,11 +127,11 @@ export function RunsListPage({ orgId }: { orgId: string }) {
         </div>
 
         {isLoading && runs.length === 0 ? (
-          <div data-testid="runs-loading" style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>
+          <div data-testid="runs-loading" style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>
             Loading runs...
           </div>
         ) : error ? (
-          <div data-testid="runs-error" style={{ padding: "16px", background: "#fee2e2", color: "#991b1b", borderRadius: "8px" }}>
+          <div data-testid="runs-error" style={{ padding: "16px", background: "var(--danger-bg)", color: "var(--danger-fg)", borderRadius: "8px" }}>
             {error}
           </div>
         ) : runs.length === 0 ? (
@@ -140,10 +140,10 @@ export function RunsListPage({ orgId }: { orgId: string }) {
             style={{
               padding: "48px",
               textAlign: "center",
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
-              color: "#64748b",
+              border: "1px solid var(--border)",
+              color: "var(--text-muted)",
             }}
           >
             No workflow runs found.
@@ -151,15 +151,15 @@ export function RunsListPage({ orgId }: { orgId: string }) {
         ) : (
           <div
             style={{
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
+              border: "1px solid var(--border)",
               overflow: "hidden",
             }}
           >
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
               <thead>
-                <tr style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0", color: "#64748b" }}>
+                <tr style={{ background: "var(--surface-2)", borderBottom: "1px solid var(--border)", color: "var(--text-muted)" }}>
                   <th style={{ padding: "12px 16px" }}>Run ID</th>
                   <th style={{ padding: "12px 16px" }}>State</th>
                   <th style={{ padding: "12px 16px" }}>Version</th>
@@ -173,13 +173,13 @@ export function RunsListPage({ orgId }: { orgId: string }) {
                   <tr
                     key={r.id}
                     data-testid={`run-row-${r.id}`}
-                    style={{ borderBottom: "1px solid #f1f5f9" }}
+                    style={{ borderBottom: "1px solid var(--border-soft)" }}
                   >
                     <td style={{ padding: "12px 16px", fontFamily: "monospace" }}>
                       <a
                         href={`/orgs/${orgId}/runs/${r.id}`}
                         data-testid={`run-link-${r.id}`}
-                        style={{ color: "#2563eb", textDecoration: "none", fontWeight: "600" }}
+                        style={{ color: "var(--link)", textDecoration: "none", fontWeight: "600" }}
                       >
                         {r.id.slice(0, 8)}...
                       </a>
@@ -200,10 +200,10 @@ export function RunsListPage({ orgId }: { orgId: string }) {
                     </td>
                     <td style={{ padding: "12px 16px" }}>v{r.workflow_version}</td>
                     <td style={{ padding: "12px 16px", textTransform: "capitalize" }}>{r.trigger_kind}</td>
-                    <td style={{ padding: "12px 16px", color: "#64748b" }}>
+                    <td style={{ padding: "12px 16px", color: "var(--text-muted)" }}>
                       {r.started_at ? new Date(r.started_at).toLocaleTimeString() : "—"}
                     </td>
-                    <td style={{ padding: "12px 16px", color: "#64748b" }}>
+                    <td style={{ padding: "12px 16px", color: "var(--text-muted)" }}>
                       {new Date(r.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -212,15 +212,15 @@ export function RunsListPage({ orgId }: { orgId: string }) {
             </table>
 
             {nextCursor && (
-              <div style={{ padding: "16px", textAlign: "center", borderTop: "1px solid #e2e8f0" }}>
+              <div style={{ padding: "16px", textAlign: "center", borderTop: "1px solid var(--border)" }}>
                 <button
                   data-testid="btn-load-more"
                   onClick={() => fetchRuns(nextCursor)}
                   disabled={isLoading}
                   style={{
                     padding: "6px 16px",
-                    background: "#fff",
-                    border: "1px solid #cbd5e1",
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
                     borderRadius: "4px",
                     fontSize: "13px",
                     cursor: "pointer",

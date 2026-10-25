@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 /* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "../../api/client";
@@ -48,6 +49,7 @@ export function ApprovalBanner({
   userRole,
   onDecisionSubmitted,
 }: ApprovalBannerProps) {
+  const toast = useToast();
   const [approval, setApproval] = useState<Approval | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [comment, setComment] = useState("");
@@ -91,6 +93,11 @@ export function ApprovalBanner({
           comment: comment.trim() || undefined,
         }),
       });
+      if (decision === "approve") {
+        toast.success("Approved", "The run will resume momentarily.");
+      } else {
+        toast.warning("Rejected", "The run has been stopped by your decision.");
+      }
       if (onDecisionSubmitted) {
         onDecisionSubmitted();
       }
@@ -117,11 +124,11 @@ export function ApprovalBanner({
         data-testid="approval-banner-loading"
         style={{
           padding: "16px",
-          background: "#fefce8",
-          border: "1px solid #fef08a",
+          background: "var(--warn-bg)",
+          border: "1px solid var(--warn-border)",
           borderRadius: "8px",
           marginBottom: "20px",
-          color: "#854d0e",
+          color: "var(--warn-fg)",
         }}
       >
         Loading approval details...
@@ -141,8 +148,8 @@ export function ApprovalBanner({
       data-testid="approval-banner"
       style={{
         padding: "20px",
-        background: "#fefce8",
-        border: "1px solid #fde047",
+        background: "var(--warn-bg)",
+        border: "1px solid var(--warn-border)",
         borderRadius: "8px",
         marginBottom: "24px",
       }}
@@ -154,7 +161,7 @@ export function ApprovalBanner({
             style={{
               display: "inline-block",
               padding: "2px 8px",
-              background: "#ca8a04",
+              background: "var(--warn-fg)",
               color: "#fff",
               borderRadius: "4px",
               fontSize: "12px",
@@ -167,11 +174,11 @@ export function ApprovalBanner({
           </span>
           <h3
             data-testid="approval-banner-summary"
-            style={{ margin: "4px 0", fontSize: "16px", color: "#713f12" }}
+            style={{ margin: "4px 0", fontSize: "16px", color: "var(--warn-fg)" }}
           >
             {renderApprovalSummary(approval.summary)}
           </h3>
-          <div style={{ fontSize: "13px", color: "#854d0e" }}>
+          <div style={{ fontSize: "13px", color: "var(--warn-fg)" }}>
             Step: <strong data-testid="approval-step-id">{approval.step_id}</strong> | Required
             Role: <strong data-testid="approval-assigned-role">{approval.assigned_role}</strong> |
             Expires:{" "}
@@ -187,9 +194,9 @@ export function ApprovalBanner({
           data-testid="approval-role-warning"
           style={{
             padding: "8px 12px",
-            background: "#fee2e2",
-            border: "1px solid #fecaca",
-            color: "#991b1b",
+            background: "var(--danger-bg)",
+            border: "1px solid var(--danger-border)",
+            color: "var(--danger-fg)",
             borderRadius: "6px",
             fontSize: "13px",
             marginBottom: "12px",
@@ -205,9 +212,9 @@ export function ApprovalBanner({
           data-testid="approval-banner-error"
           style={{
             padding: "8px 12px",
-            background: "#fee2e2",
-            border: "1px solid #fecaca",
-            color: "#991b1b",
+            background: "var(--danger-bg)",
+            border: "1px solid var(--danger-border)",
+            color: "var(--danger-fg)",
             borderRadius: "6px",
             fontSize: "13px",
             marginBottom: "12px",
@@ -230,7 +237,7 @@ export function ApprovalBanner({
             boxSizing: "border-box",
             padding: "8px 12px",
             borderRadius: "6px",
-            border: "1px solid #cbd5e1",
+            border: "1px solid var(--border)",
             fontSize: "13px",
             marginBottom: "12px",
           }}
@@ -243,7 +250,7 @@ export function ApprovalBanner({
             disabled={!allowed || isSubmitting || isExpired}
             style={{
               padding: "8px 16px",
-              background: allowed && !isExpired ? "#16a34a" : "#94a3b8",
+              background: allowed && !isExpired ? "var(--success)" : "var(--text-dim)",
               color: "#fff",
               border: "none",
               borderRadius: "6px",
@@ -260,7 +267,7 @@ export function ApprovalBanner({
             disabled={!allowed || isSubmitting || isExpired}
             style={{
               padding: "8px 16px",
-              background: allowed && !isExpired ? "#dc2626" : "#94a3b8",
+              background: allowed && !isExpired ? "var(--danger)" : "var(--text-dim)",
               color: "#fff",
               border: "none",
               borderRadius: "6px",

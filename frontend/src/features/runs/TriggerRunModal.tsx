@@ -1,3 +1,4 @@
+import { useToast } from "../../components/Toast";
 import React, { useState, useEffect } from "react";
 import { apiFetch } from "../../api/client";
 import { ApiError } from "../../api/errors";
@@ -31,6 +32,7 @@ export function TriggerRunModal({
   onClose,
   onSuccess,
 }: TriggerRunModalProps) {
+  const toast = useToast();
   const [inputsJson, setInputsJson] = useState("{\n  \n}");
   const [idempotencyKey, setIdempotencyKey] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,6 +73,7 @@ export function TriggerRunModal({
         }),
       });
 
+      toast.info("Run queued", `Run ${res.run_id.slice(0, 8)} is on its way to a worker.`);
       onSuccess(res.run_id);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -102,7 +105,7 @@ export function TriggerRunModal({
       <div
         data-testid="trigger-run-modal"
         style={{
-          background: "#fff",
+          background: "var(--surface)",
           borderRadius: "8px",
           padding: "24px",
           width: "480px",
@@ -126,8 +129,8 @@ export function TriggerRunModal({
             data-testid="trigger-error"
             style={{
               padding: "10px",
-              background: "#fee2e2",
-              color: "#b91c1c",
+              background: "var(--danger-bg)",
+              color: "var(--danger-fg)",
               borderRadius: "4px",
               fontSize: "13px",
               marginBottom: "16px",
@@ -141,7 +144,7 @@ export function TriggerRunModal({
           <div style={{ marginBottom: "12px" }}>
             <label
               htmlFor="idempotency-key"
-              style={{ display: "block", fontSize: "12px", fontWeight: "500", color: "#64748b", marginBottom: "4px" }}
+              style={{ display: "block", fontSize: "12px", fontWeight: "500", color: "var(--text-muted)", marginBottom: "4px" }}
             >
               Idempotency Key
             </label>
@@ -157,8 +160,8 @@ export function TriggerRunModal({
                 fontSize: "12px",
                 fontFamily: "monospace",
                 borderRadius: "4px",
-                border: "1px solid #cbd5e1",
-                background: "#f8fafc",
+                border: "1px solid var(--border)",
+                background: "var(--surface-2)",
                 boxSizing: "border-box",
               }}
             />
@@ -167,7 +170,7 @@ export function TriggerRunModal({
           <div style={{ marginBottom: "16px" }}>
             <label
               htmlFor="run-inputs"
-              style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#334155", marginBottom: "4px" }}
+              style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "var(--text)", marginBottom: "4px" }}
             >
               Workflow Inputs (JSON)
             </label>
@@ -183,7 +186,7 @@ export function TriggerRunModal({
                 fontSize: "13px",
                 fontFamily: "monospace",
                 borderRadius: "4px",
-                border: "1px solid #cbd5e1",
+                border: "1px solid var(--border)",
                 boxSizing: "border-box",
               }}
             />
@@ -197,8 +200,8 @@ export function TriggerRunModal({
               disabled={isSubmitting}
               style={{
                 padding: "8px 16px",
-                background: "#fff",
-                border: "1px solid #cbd5e1",
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
                 borderRadius: "4px",
                 cursor: "pointer",
               }}
@@ -211,7 +214,7 @@ export function TriggerRunModal({
               disabled={isSubmitting}
               style={{
                 padding: "8px 16px",
-                background: "#2563eb",
+                background: "var(--grad-primary)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "4px",

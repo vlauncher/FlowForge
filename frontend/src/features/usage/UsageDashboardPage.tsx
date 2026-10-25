@@ -51,7 +51,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "var(--surface-2)" }}>
       <Header currentOrgId={orgId} />
       <main style={{ maxWidth: "1000px", margin: "24px auto", padding: "0 16px" }}>
         <div
@@ -66,7 +66,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             <h1 style={{ margin: "0 0 4px 0", fontSize: "22px", fontWeight: "700" }}>
               Usage & Cost Analytics
             </h1>
-            <p style={{ margin: 0, fontSize: "14px", color: "#64748b" }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-muted)" }}>
               Token consumption, model breakdown, and organization budget tracking.
             </p>
           </div>
@@ -74,14 +74,14 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             <a
               href={`/orgs/${orgId}/runs`}
               data-testid="link-to-runs"
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Runs →
             </a>
             <a
               href={`/orgs/${orgId}/workflows`}
               data-testid="link-to-workflows"
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Workflows →
             </a>
@@ -91,7 +91,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
         {isLoading ? (
           <div
             data-testid="usage-loading"
-            style={{ padding: "40px", textAlign: "center", color: "#64748b" }}
+            style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}
           >
             Loading usage dashboard...
           </div>
@@ -100,8 +100,8 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             data-testid="usage-error"
             style={{
               padding: "16px",
-              background: "#fee2e2",
-              color: "#991b1b",
+              background: "var(--danger-bg)",
+              color: "var(--danger-fg)",
               borderRadius: "8px",
             }}
           >
@@ -113,9 +113,9 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             <div
               data-testid="budget-card"
               style={{
-                background: "#fff",
+                background: "var(--surface)",
                 borderRadius: "8px",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--border)",
                 padding: "20px",
                 marginBottom: "20px",
               }}
@@ -128,12 +128,12 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                   marginBottom: "8px",
                 }}
               >
-                <span style={{ fontSize: "14px", fontWeight: "600", color: "#1e293b" }}>
+                <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text)" }}>
                   Monthly Budget Consumption
                 </span>
                 <span
                   data-testid="budget-spent-ratio"
-                  style={{ fontSize: "14px", fontWeight: "600", color: "#2563eb" }}
+                  style={{ fontSize: "14px", fontWeight: "600", color: "var(--link)" }}
                 >
                   {formatMicroUsd(usage.totals.estimated_cost_micro_usd)} /{" "}
                   {formatMicroUsd(usage.budget_limit_micro_usd)} (
@@ -148,7 +148,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                 style={{
                   width: "100%",
                   height: "10px",
-                  background: "#e2e8f0",
+                  background: "var(--border)",
                   borderRadius: "5px",
                   overflow: "hidden",
                 }}
@@ -166,8 +166,8 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                         usage.totals.estimated_cost_micro_usd,
                         usage.budget_limit_micro_usd
                       ) > 90
-                        ? "#ef4444"
-                        : "#2563eb",
+                        ? "var(--danger)"
+                        : "var(--primary)",
                     borderRadius: "5px",
                     transition: "width 0.3s ease",
                   }}
@@ -187,13 +187,13 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             >
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--surface)",
                   padding: "16px",
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
                 }}
               >
-                <div style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase" }}>
                   Total LLM Calls
                 </div>
                 <div
@@ -206,13 +206,13 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
 
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--surface)",
                   padding: "16px",
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
                 }}
               >
-                <div style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase" }}>
                   Total Tokens
                 </div>
                 <div
@@ -221,7 +221,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                 >
                   {usage.totals.total_tokens.toLocaleString()}
                 </div>
-                <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "2px" }}>
+                <div style={{ fontSize: "11px", color: "var(--text-dim)", marginTop: "2px" }}>
                   {usage.totals.prompt_tokens.toLocaleString()} prompt /{" "}
                   {usage.totals.completion_tokens.toLocaleString()} compl.
                 </div>
@@ -229,18 +229,18 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
 
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--surface)",
                   padding: "16px",
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
                 }}
               >
-                <div style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase" }}>
                   Estimated Cost
                 </div>
                 <div
                   data-testid="total-estimated-cost"
-                  style={{ fontSize: "22px", fontWeight: "700", marginTop: "4px", color: "#166534" }}
+                  style={{ fontSize: "22px", fontWeight: "700", marginTop: "4px", color: "var(--success-fg)" }}
                 >
                   {formatMicroUsd(usage.totals.estimated_cost_micro_usd)}
                 </div>
@@ -248,18 +248,18 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
 
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--surface)",
                   padding: "16px",
                   borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border)",
                 }}
               >
-                <div style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase" }}>
                   Billed Cost
                 </div>
                 <div
                   data-testid="total-billed-cost"
-                  style={{ fontSize: "22px", fontWeight: "700", marginTop: "4px", color: "#475569" }}
+                  style={{ fontSize: "22px", fontWeight: "700", marginTop: "4px", color: "var(--text-soft)" }}
                 >
                   {formatMicroUsd(usage.totals.billed_cost_micro_usd)}
                 </div>
@@ -270,9 +270,9 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             <div
               data-testid="runs-state-card"
               style={{
-                background: "#fff",
+                background: "var(--surface)",
                 borderRadius: "8px",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--border)",
                 padding: "20px",
                 marginBottom: "24px",
               }}
@@ -287,13 +287,13 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                     data-testid={`state-count-${state.toLowerCase()}`}
                     style={{
                       padding: "8px 14px",
-                      background: "#f8fafc",
+                      background: "var(--surface-2)",
                       borderRadius: "6px",
-                      border: "1px solid #e2e8f0",
+                      border: "1px solid var(--border)",
                       fontSize: "13px",
                     }}
                   >
-                    <span style={{ color: "#64748b" }}>{state}:</span>{" "}
+                    <span style={{ color: "var(--text-muted)" }}>{state}:</span>{" "}
                     <strong>{count}</strong>
                   </div>
                 ))}
@@ -304,13 +304,13 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
             <div
               data-testid="model-breakdown-card"
               style={{
-                background: "#fff",
+                background: "var(--surface)",
                 borderRadius: "8px",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--border)",
                 overflow: "hidden",
               }}
             >
-              <div style={{ padding: "16px 20px", borderBottom: "1px solid #e2e8f0" }}>
+              <div style={{ padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
                 <h3 style={{ margin: 0, fontSize: "15px", fontWeight: "600" }}>
                   Model Breakdown
                 </h3>
@@ -319,7 +319,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
               {usage.by_model.length === 0 ? (
                 <div
                   data-testid="no-models-message"
-                  style={{ padding: "32px", textAlign: "center", color: "#64748b", fontSize: "14px" }}
+                  style={{ padding: "32px", textAlign: "center", color: "var(--text-muted)", fontSize: "14px" }}
                 >
                   No model usage recorded in this time window.
                 </div>
@@ -329,7 +329,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                   style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}
                 >
                   <thead>
-                    <tr style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+                    <tr style={{ background: "var(--surface-2)", borderBottom: "1px solid var(--border)" }}>
                       <th style={{ padding: "12px 20px" }}>Provider</th>
                       <th style={{ padding: "12px 20px" }}>Model</th>
                       <th style={{ padding: "12px 20px" }}>Calls</th>
@@ -342,7 +342,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                       <tr
                         key={idx}
                         data-testid={`model-row-${m.model_name}`}
-                        style={{ borderBottom: "1px solid #f1f5f9" }}
+                        style={{ borderBottom: "1px solid var(--border-soft)" }}
                       >
                         <td style={{ padding: "12px 20px" }}>{m.provider}</td>
                         <td style={{ padding: "12px 20px", fontFamily: "monospace", fontWeight: "600" }}>
@@ -350,7 +350,7 @@ export function UsageDashboardPage({ orgId }: UsageDashboardPageProps) {
                         </td>
                         <td style={{ padding: "12px 20px" }}>{m.calls}</td>
                         <td style={{ padding: "12px 20px" }}>{m.total_tokens.toLocaleString()}</td>
-                        <td style={{ padding: "12px 20px", color: "#166534", fontWeight: "600" }}>
+                        <td style={{ padding: "12px 20px", color: "var(--success-fg)", fontWeight: "600" }}>
                           {formatMicroUsd(m.estimated_cost_micro_usd)}
                         </td>
                       </tr>

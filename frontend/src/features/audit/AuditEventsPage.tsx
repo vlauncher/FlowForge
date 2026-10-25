@@ -78,7 +78,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
   const isRestrictedRole = userRole !== "owner" && userRole !== "admin";
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "var(--surface-2)" }}>
       <Header currentOrgId={orgId} />
       <main style={{ maxWidth: "1200px", margin: "24px auto", padding: "0 16px" }}>
         <div
@@ -93,7 +93,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
             <h1 style={{ margin: "0 0 4px 0", fontSize: "22px", fontWeight: "700" }}>
               Audit Events
             </h1>
-            <p style={{ margin: 0, fontSize: "14px", color: "#64748b" }}>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-muted)" }}>
               Append-only immutable record of administrative, execution, and security events.
             </p>
           </div>
@@ -101,14 +101,14 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
             <a
               href={`/orgs/${orgId}/approvals`}
               data-testid="link-to-approvals"
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Approvals →
             </a>
             <a
               href={`/orgs/${orgId}/workflows`}
               data-testid="link-to-workflows"
-              style={{ color: "#2563eb", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
+              style={{ color: "var(--link)", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}
             >
               Workflows →
             </a>
@@ -126,7 +126,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
             style={{
               padding: "8px 12px",
               borderRadius: "6px",
-              border: "1px solid #cbd5e1",
+              border: "1px solid var(--border)",
               fontSize: "13px",
               width: "360px",
             }}
@@ -138,9 +138,9 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
             data-testid="audit-forbidden-warning"
             style={{
               padding: "24px",
-              background: "#fee2e2",
-              border: "1px solid #fecaca",
-              color: "#991b1b",
+              background: "var(--danger-bg)",
+              border: "1px solid var(--danger-border)",
+              color: "var(--danger-fg)",
               borderRadius: "8px",
             }}
           >
@@ -150,7 +150,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
         ) : isLoading && events.length === 0 ? (
           <div
             data-testid="audit-loading"
-            style={{ padding: "40px", textAlign: "center", color: "#64748b" }}
+            style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}
           >
             Loading audit events...
           </div>
@@ -159,8 +159,8 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
             data-testid="audit-error"
             style={{
               padding: "16px",
-              background: "#fee2e2",
-              color: "#991b1b",
+              background: "var(--danger-bg)",
+              color: "var(--danger-fg)",
               borderRadius: "8px",
             }}
           >
@@ -172,10 +172,10 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
             style={{
               padding: "48px",
               textAlign: "center",
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
-              color: "#64748b",
+              border: "1px solid var(--border)",
+              color: "var(--text-muted)",
             }}
           >
             No audit events found.
@@ -183,9 +183,9 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
         ) : (
           <div
             style={{
-              background: "#fff",
+              background: "var(--surface)",
               borderRadius: "8px",
-              border: "1px solid #e2e8f0",
+              border: "1px solid var(--border)",
               overflowX: "auto",
             }}
           >
@@ -194,7 +194,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
               style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}
             >
               <thead>
-                <tr style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+                <tr style={{ background: "var(--surface-2)", borderBottom: "1px solid var(--border)" }}>
                   <th style={{ padding: "12px 16px" }}>Timestamp</th>
                   <th style={{ padding: "12px 16px" }}>Action</th>
                   <th style={{ padding: "12px 16px" }}>Actor</th>
@@ -208,9 +208,9 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                   <tr
                     key={ev.id}
                     data-testid={`audit-row-${ev.id}`}
-                    style={{ borderBottom: "1px solid #f1f5f9" }}
+                    style={{ borderBottom: "1px solid var(--border-soft)" }}
                   >
-                    <td style={{ padding: "12px 16px", whiteSpace: "nowrap", color: "#64748b" }}>
+                    <td style={{ padding: "12px 16px", whiteSpace: "nowrap", color: "var(--text-muted)" }}>
                       {new Date(ev.created_at).toLocaleString()}
                     </td>
                     <td style={{ padding: "12px 16px" }}>
@@ -218,11 +218,11 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                         data-testid={`audit-action-${ev.id}`}
                         style={{
                           padding: "2px 8px",
-                          background: "#f1f5f9",
+                          background: "var(--surface-2)",
                           borderRadius: "4px",
                           fontFamily: "monospace",
                           fontWeight: "600",
-                          color: "#1e293b",
+                          color: "var(--text)",
                         }}
                       >
                         {ev.action}
@@ -231,7 +231,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                     <td style={{ padding: "12px 16px" }}>
                       <div>{ev.actor_type}</div>
                       {ev.actor_user_id && (
-                        <div style={{ fontSize: "11px", color: "#94a3b8", fontFamily: "monospace" }}>
+                        <div style={{ fontSize: "11px", color: "var(--text-dim)", fontFamily: "monospace" }}>
                           {ev.actor_user_id}
                         </div>
                       )}
@@ -239,12 +239,12 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                     <td style={{ padding: "12px 16px" }}>
                       <div>{ev.target_type}</div>
                       {ev.target_id && (
-                        <div style={{ fontSize: "11px", color: "#94a3b8", fontFamily: "monospace" }}>
+                        <div style={{ fontSize: "11px", color: "var(--text-dim)", fontFamily: "monospace" }}>
                           {ev.target_id}
                         </div>
                       )}
                     </td>
-                    <td style={{ padding: "12px 16px", fontFamily: "monospace", fontSize: "12px", color: "#64748b" }}>
+                    <td style={{ padding: "12px 16px", fontFamily: "monospace", fontSize: "12px", color: "var(--text-muted)" }}>
                       {ev.request_id || "—"}
                     </td>
                     <td style={{ padding: "12px 16px" }}>
@@ -254,7 +254,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                           style={{
                             margin: 0,
                             padding: "6px 8px",
-                            background: "#f8fafc",
+                            background: "var(--surface-2)",
                             borderRadius: "4px",
                             fontSize: "11px",
                             fontFamily: "monospace",
@@ -265,7 +265,7 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                           {JSON.stringify(ev.redacted_metadata, null, 2)}
                         </pre>
                       ) : (
-                        <span style={{ color: "#94a3b8" }}>—</span>
+                        <span style={{ color: "var(--text-dim)" }}>—</span>
                       )}
                     </td>
                   </tr>
@@ -281,8 +281,8 @@ export function AuditEventsPage({ orgId }: AuditEventsPageProps) {
                   disabled={isLoading}
                   style={{
                     padding: "8px 20px",
-                    background: "#fff",
-                    border: "1px solid #cbd5e1",
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
                     borderRadius: "6px",
                     cursor: "pointer",
                     fontSize: "13px",
